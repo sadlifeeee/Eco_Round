@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">EcoRound-App</string>
+    <string name="login">Login</string>
+    <string name="googleLogin">Login with Google</string>
+    <string name="remember">Remember me</string>
+    <string name="signup">Don\'t account? Click here to Sign Up!</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="uploadPhoto">Upload Photo</string>
+    <string name="expenseCost">Expense Cost</string>
+    <string name="expenseDate">Expense Date</string>
+    <string name="expenseTitle">Expense Title</string>
+
+
+</resources>

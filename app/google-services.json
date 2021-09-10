@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "227831008319",
+    "firebase_url": "https://eco-round-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "eco-round",
+    "storage_bucket": "eco-round.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:227831008319:android:6f69ff4533c3d95ebf7c8a",
+        "android_client_info": {
+          "package_name": "ph.edu.dlsu.mobdeve.s17.lee.jerickson.eco_round"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "227831008319-ua9691okb61su0c78utkgduqegvj0mqo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ph.edu.dlsu.mobdeve.s17.lee.jerickson.eco_round",
+            "certificate_hash": "d7bd3478f0db039a859d2def5f16505a23dcdf05"
+          }
+        },
+        {
+          "client_id": "227831008319-b6trtqhbaegtjpvqfdbo65iuvnckhn7o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAA40dCBESunHMuN0vEn4nL6SwanfxdZK8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "227831008319-b6trtqhbaegtjpvqfdbo65iuvnckhn7o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
