@@ -95,6 +95,8 @@ public class RegisterActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Failed to Register User! Please try again", Toast.LENGTH_SHORT).show();
                         }
                     });
+
+            FirebaseAuth.getInstance().signOut();
         }
     }
 

@@ -8,17 +8,22 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import ph.edu.dlsu.mobdeve.s17.lee.jerickson.eco_round.databinding.ActivitySettingsBinding;
 
 public class SettingsActivity extends AppCompatActivity {
+
     private ActivitySettingsBinding binding;
-    private GoogleApiClient mGoogleApiClient;
+    private GoogleSignInClient mGoogleSignInClient;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,11 +31,10 @@ public class SettingsActivity extends AppCompatActivity {
         binding = ActivitySettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        budgetOnClick();
+
 
         navigate();
-        logoutOnClick();
-
+        init();
     }
 
     @Override
@@ -42,15 +46,19 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         navigate();
+        super.onStart();
+    }
+
+    private void init(){
+        logoutOnClick();
+        budgetOnClick();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-        mGoogleApiClient.connect();
-        super.onStart();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
 
     private void navigate() {
@@ -74,16 +82,18 @@ public class SettingsActivity extends AppCompatActivity {
     }
     private void logoutOnClick() {
         binding.tvLogoutbutton.setOnClickListener(v ->  {
-            Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                    new ResultCallback<Status>() {
-                        @Override
-                        public void onResult(Status status) {
-                            Toast.makeText(getApplicationContext(),"Logged Out",Toast.LENGTH_SHORT).show();
-                            Intent i=new Intent(getApplicationContext(), MainActivity.class);
-                            startActivity(i);
-                            finish();
-                        }
-                    });
+            FirebaseAuth.getInstance().signOut();
+            Toast.makeText(getApplicationContext(), "Successfully Signed Out" , Toast.LENGTH_SHORT).show();
+
+            mGoogleSignInClient.signOut().addOnCompleteListener(task -> {
+                if(task.isSuccessful()) {
+                    Intent i = new Intent(SettingsActivity.this, WelcomeActivity.class);
+                    startActivity(i);
+                    finish();
+                }
+            });
+
+
         });
     }
 
