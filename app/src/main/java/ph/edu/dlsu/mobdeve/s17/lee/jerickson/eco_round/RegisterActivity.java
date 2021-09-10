@@ -92,7 +92,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     });
 
                         } else {
-                            Toast.makeText(getApplicationContext(), "Failed to Register User! Please try again", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Failed to Register User! User already exist", Toast.LENGTH_SHORT).show();
                         }
                     });
 

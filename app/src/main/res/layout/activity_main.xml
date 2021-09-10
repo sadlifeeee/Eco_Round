@@ -94,6 +94,7 @@
                 android:textColorHint="@color/grey"
                 android:padding="5dp"
                 android:layout_weight="8"
+                android:inputType="textPassword"
                 />
 
         </LinearLayout>
