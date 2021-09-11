@@ -4,39 +4,67 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
-<LinearLayout android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:id="@+id/ll_budgetsettings">
-    <TextView
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Budget"
-        android:textSize="25dp"
-        android:layout_marginBottom="5dp"
-        android:layout_margin="5dp"
+        android:orientation="horizontal"
+        android:id="@+id/ll_budgetsettings">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Budget"
+            android:textSize="25dp"
+            android:layout_marginBottom="5dp"
+            android:layout_margin="5dp"
+            android:layout_marginLeft="5dp"
+            android:shadowColor="@color/yellowbrown"
+            android:shadowRadius="2"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:typeface="serif"
+            android:id="@+id/tv_budgetTitle"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="160dp"
+            android:textSize="25dp"
+            android:text="Php 9500.00"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:shadowColor="@color/yellowbrown"
+            android:shadowRadius="2"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:typeface="serif"
+            android:id="@+id/tv_budgetvalue"/>
+
+        </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Generate Login QR Code"
+        android:textSize="25sp"
         android:layout_marginLeft="5dp"
-        android:shadowColor="@color/yellowbrown"
-        android:shadowRadius="2"
-        android:shadowDx="1"
-        android:shadowDy="1"
-        android:typeface="serif"
-        android:id="@+id/tv_budgetTitle"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="160dp"
-        android:textSize="25dp"
-        android:text="Php 9500.00"
-        android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
         android:shadowColor="@color/yellowbrown"
         android:shadowRadius="2"
         android:shadowDx="1"
         android:shadowDy="1"
         android:typeface="serif"
-        android:id="@+id/tv_budgetvalue"/>
-    </LinearLayout>
+        android:id="@+id/tv_GenerateQRLogin"
+        />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -58,10 +86,12 @@
         android:typeface="serif"
         android:id="@+id/tv_logoutbutton"
         />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/black"/>
+
 
     <LinearLayout
         android:layout_width="match_parent"
