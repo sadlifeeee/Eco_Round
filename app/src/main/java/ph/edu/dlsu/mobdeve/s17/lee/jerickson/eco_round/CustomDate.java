@@ -3,8 +3,8 @@ package ph.edu.dlsu.mobdeve.s17.lee.jerickson.eco_round;
 import java.util.Calendar;
 
 public class CustomDate {
-    private static final String[] monthString = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-    private int day_in_month, month, year;
+    public static final String[] monthString = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+    public int day_in_month, month, year;
 
     // By default, creates a CustomDate for today
     public CustomDate() {

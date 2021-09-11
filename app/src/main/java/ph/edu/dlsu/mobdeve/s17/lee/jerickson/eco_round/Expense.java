@@ -1,17 +1,100 @@
 package ph.edu.dlsu.mobdeve.s17.lee.jerickson.eco_round;
 
-public class Expense {
-    private String title, category;
-    private Double price;
-    private int receiptID, categoryImg;
-    private CustomDate dateCreated;
+import android.util.Log;
 
-    public Expense(String title, String category, Double price, int receiptID, CustomDate dateCreated){
+import com.google.firebase.Timestamp;
+
+public class Expense {
+    private String title, category, userID, expenseID, receiptID;
+    private Double price;
+    private int categoryImg;
+    private Timestamp dateCreated;
+
+    public Expense(String category,  Timestamp dateCreated, String expenseID, Double price, String receiptID, String title, String userID){
         this.title = title;
         this.price = price;
         this.receiptID = receiptID;
         this.dateCreated = dateCreated;
+        this.expenseID = expenseID;
+        this.userID = userID;
+        this.category = category.trim();
+        if (category == "Utilities"){
+            this.categoryImg = R.drawable.utilities;
+        }
+        else if(category.equalsIgnoreCase("Food")){
+            this.categoryImg = R.drawable.food;
+            System.out.println("HELLOOOOO PUMASOK DITO HELLOOOO");
+            Log.i("Test", " I am hereeee");
+        }
+        else if(category == "Transportation") {
+            this.categoryImg = R.drawable.transpo;
+        }
+        else if(category == "Internet") {
+            this.categoryImg = R.drawable.internet;
+        }
+        else if(category == "Home rent") {
+            this.categoryImg = R.drawable.homerent;
+        }
+        else if(category == "Entertainment") {
+            this.categoryImg = R.drawable.entertainment;
+        }
+        else if(category == "Gas") {
+            this.categoryImg = R.drawable.gas;
+        }
+        else if(category == "Gift") {
+            this.categoryImg = R.drawable.giftcard;
+        }
+        else if(category == "Phone") {
+            this.categoryImg = R.drawable.phone;
+        }
+        else if(category == "Shopping") {
+            this.categoryImg = R.drawable.shopping;
+        }
+    }
+
+    public Expense(){
+
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public String getReceiptID() {
+        return receiptID;
+    }
+
+    public Timestamp getDateCreated() {
+        return dateCreated;
+    }
+
+    public int getCategoryImg() {
+        return  categoryImg;
+    }
+
+    public String getUserID(){
+        return userID;
+    }
+
+    public String getExpenseID(){
+        return expenseID;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setCategory(String category) {
         this.category = category;
+
         if (category == "Utilities"){
             this.categoryImg = R.drawable.utilities;
         }
@@ -44,47 +127,56 @@ public class Expense {
         }
     }
 
-    public Expense(String title, String category, Double price, int receiptID){
-        this.title = title;
-        this.category = category;
-        this.price = price;
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
+
+    public void setExpenseID(String expenseID) {
+        this.expenseID = expenseID;
+    }
+
+    public void setReceiptID(String receiptID) {
         this.receiptID = receiptID;
-        this.dateCreated = new CustomDate();
-        if (category == "Utilities"){
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public void setCategoryImg() {
+        if (this.category == "Utilities"){
             this.categoryImg = R.drawable.utilities;
         }
-        else if(category == "Food"){
+        else if(this.category == "Food"){
             this.categoryImg = R.drawable.food;
         }
-        else if(category == "Transportation") {
+        else if(this.category == "Transportation") {
             this.categoryImg = R.drawable.transpo;
         }
-        else if(category == "Internet") {
+        else if(this.category == "Internet") {
             this.categoryImg = R.drawable.internet;
+        }
+        else if(this.category == "Home rent") {
+            this.categoryImg = R.drawable.homerent;
+        }
+        else if(this.category == "Entertainment") {
+            this.categoryImg = R.drawable.entertainment;
+        }
+        else if(this.category == "Gas") {
+            this.categoryImg = R.drawable.gas;
+        }
+        else if(this.category == "Gift") {
+            this.categoryImg = R.drawable.giftcard;
+        }
+        else if(this.category == "Phone") {
+            this.categoryImg = R.drawable.phone;
+        }
+        else if(this.category == "Shopping") {
+            this.categoryImg = R.drawable.shopping;
         }
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public int getReceiptID() {
-        return receiptID;
-    }
-
-    public CustomDate getDateCreated() {
-        return dateCreated;
-    }
-
-    public int getCategoryImg() {
-        return  categoryImg;
+    public void setDateCreated(Timestamp dateCreated) {
+        this.dateCreated = dateCreated;
     }
 }

@@ -44,9 +44,46 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
             i.putExtra(ExpenseDetailsActivity.CATEGORY, expenseArrayList.get(expenseViewHolder.getAdapterPosition()).getCategory());
             i.putExtra(ExpenseDetailsActivity.TITLE, expenseArrayList.get(expenseViewHolder.getAdapterPosition()).getTitle());
             i.putExtra(ExpenseDetailsActivity.PRICE, expenseArrayList.get(expenseViewHolder.getAdapterPosition()).getPrice());
-            i.putExtra(ExpenseDetailsActivity.CATEGORYPIC, expenseArrayList.get(expenseViewHolder.getAdapterPosition()).getCategoryImg());
+            String categ = expenseArrayList.get(expenseViewHolder.getAdapterPosition()).getCategory().trim();
+            Log.i("Test", " I am hereeee");
+            int catImg = 0;
+            if (categ.equalsIgnoreCase("Utilities")){
+                catImg = R.drawable.utilities;
+            }
+            else if(categ.equalsIgnoreCase("Food")){
+                catImg = R.drawable.food;
+                System.out.println("HELLOOOOO PUMASOK DITO HELLOOOO");
+                Log.i("Test", categ);
+            }
+            else if(categ.equalsIgnoreCase("Transportation")) {
+                catImg = R.drawable.transpo;
+            }
+            else if(categ.equalsIgnoreCase("Internet")) {
+                catImg = R.drawable.internet;
+            }
+            else if(categ.equalsIgnoreCase("Home rent")) {
+                catImg = R.drawable.homerent;
+            }
+            else if(categ.equalsIgnoreCase("Entertainment")) {
+                catImg = R.drawable.entertainment;
+            }
+            else if(categ.equalsIgnoreCase("Gas")) {
+                catImg = R.drawable.gas;
+            }
+            else if(categ.equalsIgnoreCase("Gift") ) {
+                catImg = R.drawable.giftcard;
+            }
+            else if(categ.equalsIgnoreCase("Phone") ) {
+                catImg = R.drawable.phone;
+            }
+            else if(categ.equalsIgnoreCase("Shopping")) {
+                catImg = R.drawable.shopping;
+            }
+            i.putExtra(ExpenseDetailsActivity.CATEGORYPIC, catImg);
             i.putExtra(ExpenseDetailsActivity.RECEIPTIMG, expenseArrayList.get(expenseViewHolder.getAdapterPosition()).getReceiptID());
-            i.putExtra(ExpenseDetailsActivity.DATEDET, expenseArrayList.get(expenseViewHolder.getAdapterPosition()).getDateCreated().toStringFull());
+            String[] date = expenseArrayList.get(expenseViewHolder.getAdapterPosition()).getDateCreated().toDate().toString().split(" ");
+            Log.i("Date Test", date[1] + " " + date[2] + " " + date[5] + " ----");
+            i.putExtra(ExpenseDetailsActivity.DATEDET, date[1] + " " + date[2] + ", " + date[5]);
             parent.getContext().startActivity(i);
         });
         return expenseViewHolder;
@@ -56,9 +93,44 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
     @Override
     public void onBindViewHolder(@NonNull ExpenseViewHolder holder, int position) {
         holder.tv_expTitle.setText(expenseArrayList.get(position).getTitle());
-        holder.iv_receipt.setImageResource(expenseArrayList.get(position).getReceiptID());
+        //holder.iv_receipt.setImageResource(expenseArrayList.get(position).getReceiptID());
         holder.tv_expPrice.setText(String.format("Php %.2f",expenseArrayList.get(position).getPrice()));
-        holder.iv_category.setImageResource(expenseArrayList.get(position).getCategoryImg());
+        String categ = expenseArrayList.get(holder.getAdapterPosition()).getCategory().trim();
+        Log.i("Test", "I am hereeee");
+        int catImg = 0;
+        if (categ.equalsIgnoreCase("Utilities")){
+            catImg = R.drawable.utilities;
+        }
+        else if(categ.equalsIgnoreCase("Food")){
+            catImg = R.drawable.food;
+            System.out.println("HELLOOOOO PUMASOK DITO HELLOOOO");
+            Log.i("Test", categ);
+        }
+        else if(categ.equalsIgnoreCase("Transportation")) {
+            catImg = R.drawable.transpo;
+        }
+        else if(categ.equalsIgnoreCase("Internet")) {
+            catImg = R.drawable.internet;
+        }
+        else if(categ.equalsIgnoreCase("Home rent")) {
+            catImg = R.drawable.homerent;
+        }
+        else if(categ.equalsIgnoreCase("Entertainment")) {
+            catImg = R.drawable.entertainment;
+        }
+        else if(categ.equalsIgnoreCase("Gas")) {
+            catImg = R.drawable.gas;
+        }
+        else if(categ.equalsIgnoreCase("Gift") ) {
+            catImg = R.drawable.giftcard;
+        }
+        else if(categ.equalsIgnoreCase("Phone") ) {
+            catImg = R.drawable.phone;
+        }
+        else if(categ.equalsIgnoreCase("Shopping")) {
+            catImg = R.drawable.shopping;
+        }
+        holder.iv_category.setImageResource(catImg);
 
         holder.ib_tts.setOnClickListener(v -> {
             String title = expenseArrayList.get(position).getTitle();
