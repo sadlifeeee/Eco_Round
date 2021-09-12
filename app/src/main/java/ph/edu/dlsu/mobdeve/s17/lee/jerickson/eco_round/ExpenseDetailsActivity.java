@@ -52,6 +52,7 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
         expId.setText((i.getStringExtra("expenseID")));
         expId.setVisibility(View.INVISIBLE);
         pNoFormat.setText(String.format("%.2f", i.getDoubleExtra("priceNoFormat", 0)));
+        pNoFormat.setVisibility(View.INVISIBLE);
         updateExpenseOnClick();
 
     }
@@ -69,7 +70,7 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
             Log.i("STRING PRICE", tempPrice);
             fPrice = Double.parseDouble(tempPrice);
 
-            Expense exp = new Expense(categ, Timestamp.now(), expenseID, fPrice, receipt, titleEd, mAuth.getCurrentUser().getUid());
+            Expense exp = new Expense(categ, expenseID, fPrice, receipt, titleEd, mAuth.getCurrentUser().getUid());
 
             Intent intent = new Intent(ExpenseDetailsActivity.this, ExpenseEdit.class);
             intent.putExtra("expense", exp);

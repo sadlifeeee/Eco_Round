@@ -1,5 +1,6 @@
 package ph.edu.dlsu.mobdeve.s17.lee.jerickson.eco_round;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.view.View;
@@ -75,6 +76,10 @@ public class ExpenseAdd extends AppCompatActivity implements AdapterView.OnItemS
             * Insert Photo upload code here
             * */
             db.collection("expenses").document(docId).set(added);
+            Toast.makeText(ExpenseAdd.this, "Expense Successfully Added", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(ExpenseAdd.this, ListActivity.class);
+            startActivity(i);
+            finish();
         });
     }
 }

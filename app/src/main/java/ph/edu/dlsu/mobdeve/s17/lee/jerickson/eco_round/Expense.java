@@ -54,6 +54,47 @@ public class Expense implements Serializable {
         }
     }
 
+    public Expense(String category, String expenseID, Double price, String receiptID, String title, String userID){
+        this.title = title;
+        this.price = price;
+        this.receiptID = receiptID;
+        this.expenseID = expenseID;
+        this.userID = userID;
+        this.category = category.trim();
+        if (category == "Utilities"){
+            this.categoryImg = R.drawable.utilities;
+        }
+        else if(category.equalsIgnoreCase("Food")){
+            this.categoryImg = R.drawable.food;
+            System.out.println("HELLOOOOO PUMASOK DITO HELLOOOO");
+            Log.i("Test", " I am hereeee");
+        }
+        else if(category == "Transportation") {
+            this.categoryImg = R.drawable.transpo;
+        }
+        else if(category == "Internet") {
+            this.categoryImg = R.drawable.internet;
+        }
+        else if(category == "Home rent") {
+            this.categoryImg = R.drawable.homerent;
+        }
+        else if(category == "Entertainment") {
+            this.categoryImg = R.drawable.entertainment;
+        }
+        else if(category == "Gas") {
+            this.categoryImg = R.drawable.gas;
+        }
+        else if(category == "Gift") {
+            this.categoryImg = R.drawable.giftcard;
+        }
+        else if(category == "Phone") {
+            this.categoryImg = R.drawable.phone;
+        }
+        else if(category == "Shopping") {
+            this.categoryImg = R.drawable.shopping;
+        }
+    }
+
     public Expense(){
 
     }

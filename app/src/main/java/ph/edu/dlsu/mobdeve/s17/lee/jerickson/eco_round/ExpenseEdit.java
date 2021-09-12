@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import ph.edu.dlsu.mobdeve.s17.lee.jerickson.eco_round.databinding.ActivityExpenseEditBinding;
 
@@ -62,11 +63,15 @@ public class ExpenseEdit extends AppCompatActivity {
             * Insert input validation here
             *
             * */
-            Expense updatedExpense = new Expense(newCategory, expense.getDateCreated(), expense.getExpenseID(), updPrice, expense.getReceiptID(), newTitle, mAuth.getCurrentUser().getUid());
-            db.collection("expenses").document(expense.getExpenseID()).set(updatedExpense).addOnSuccessListener(new OnSuccessListener<Void>() {
+            Expense updatedExpense = new Expense(newCategory, expense.getExpenseID(), updPrice, expense.getReceiptID(), newTitle, mAuth.getCurrentUser().getUid());
+            db.collection("expenses").document(expense.getExpenseID()).update("category", newCategory, "price", updPrice,
+                    "title", newTitle).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void unused) {
                     Toast.makeText(ExpenseEdit.this, "Expense Updated", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(ExpenseEdit.this, ListActivity.class);
+                    startActivity(i);
+                    finish();
                 }
             });
         });
