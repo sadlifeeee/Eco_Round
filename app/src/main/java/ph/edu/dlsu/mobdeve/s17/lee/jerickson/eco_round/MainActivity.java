@@ -2,6 +2,7 @@ package ph.edu.dlsu.mobdeve.s17.lee.jerickson.eco_round;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
 import android.widget.Toast;
@@ -22,12 +23,20 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.security.MessageDigest;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
 
 import ph.edu.dlsu.mobdeve.s17.lee.jerickson.eco_round.databinding.ActivityMainBinding;
 
 import static android.content.ContentValues.TAG;
 
 public class MainActivity extends AppCompatActivity {
+
+    private final String mainKey = "g7zgoIV6uNeWve4ybSWr";
 
     private StoragePreferences storagePreferences;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -36,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private String savePass = "", saveEmail = "";
 
     private GoogleSignInClient mGoogleSignInClient;
-
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     private int RC_SIGN_IN = 123;
 
     @Override
@@ -89,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
     public void init() {
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestIdToken("227831008319-b6trtqhbaegtjpvqfdbo65iuvnckhn7o.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
 
@@ -110,6 +119,25 @@ public class MainActivity extends AppCompatActivity {
         googleLoginOnClick();
         loginOnClick();
         registerOnClick();
+    }
+
+    private String decrypt(String hashPass , String mainKey) throws Exception {
+        SecretKeySpec key = generateKey(mainKey);
+        Cipher c = Cipher.getInstance("AES");
+        c.init(Cipher.DECRYPT_MODE , key);
+        byte[] decodedValue = Base64.decode(hashPass, Base64.DEFAULT);
+        byte[] decValue = c.doFinal(decodedValue);
+        String decryptedValue = new String(decValue);
+        return decryptedValue;
+    }
+
+    private SecretKeySpec generateKey(String mainKey) throws Exception{
+        final MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] bytes = mainKey.getBytes("UTF-8");
+        digest.update(bytes , 0 , bytes.length);
+        byte[] key = digest.digest();
+        SecretKeySpec secretKeySpec = new SecretKeySpec(key , "AES");
+        return secretKeySpec;
     }
 
     private void registerOnClick() {
@@ -190,9 +218,7 @@ public class MainActivity extends AppCompatActivity {
                         FirebaseUser currentUser = mAuth.getCurrentUser();
                         User user = new User(currentUser.getEmail());
 
-                        FirebaseDatabase.getInstance().getReference("Users")
-                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                .setValue(user).addOnCompleteListener(task1 -> {
+                        db.collection("users").add(user).addOnCompleteListener(task1 -> {
                             if (task1.isSuccessful()) {
                                 Toast.makeText(getApplicationContext(), "Login Successful!", Toast.LENGTH_SHORT).show();
                                 Intent goToSecond = new Intent(MainActivity.this, ListActivity.class);

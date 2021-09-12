@@ -1,4 +1,5 @@
 <resources>
+
     <string name="app_name">EcoRound-App</string>
     <string name="login">Login</string>
     <string name="googleLogin">Login with Google</string>
