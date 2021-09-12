@@ -10,6 +10,18 @@
     <string name="expenseCost">Expense Cost</string>
     <string name="expenseDate">Expense Date</string>
     <string name="expenseTitle">Expense Title</string>
+    <string-array name="category_options">
+        <item>Internet</item>
+        <item>Food</item>
+        <item>Utilities</item>
+        <item>Home rent</item>
+        <item>Transportation</item>
+        <item>Entertainment</item>
+        <item>Gas</item>
+        <item>Gift</item>
+        <item>Phone</item>
+        <item>Shopping</item>
+    </string-array>
 
 
 </resources>

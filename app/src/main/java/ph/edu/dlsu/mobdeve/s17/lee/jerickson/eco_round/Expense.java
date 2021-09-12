@@ -4,7 +4,9 @@ import android.util.Log;
 
 import com.google.firebase.Timestamp;
 
-public class Expense {
+import java.io.Serializable;
+
+public class Expense implements Serializable {
     private String title, category, userID, expenseID, receiptID;
     private Double price;
     private int categoryImg;

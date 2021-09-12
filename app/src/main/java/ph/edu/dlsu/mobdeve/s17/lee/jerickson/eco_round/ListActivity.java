@@ -48,7 +48,7 @@ public class ListActivity extends AppCompatActivity {
         expenseAdapter = new ExpenseAdapter(getApplicationContext(), expenses);
         binding.rvExpenses.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         binding.rvExpenses.setAdapter(expenseAdapter);
-
+        addExp();
         navigate();
     }
 
@@ -124,6 +124,12 @@ public class ListActivity extends AppCompatActivity {
         }
 
         super.onDestroy();
+    }
+    private void addExp(){
+        binding.btnAdd.setOnClickListener(view -> {
+            Intent i = new Intent(ListActivity.this, ExpenseAdd.class);
+            startActivity(i);
+        });
     }
 
 }

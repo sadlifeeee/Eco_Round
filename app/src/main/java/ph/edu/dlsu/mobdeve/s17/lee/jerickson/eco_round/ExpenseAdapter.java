@@ -84,6 +84,8 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
             String[] date = expenseArrayList.get(expenseViewHolder.getAdapterPosition()).getDateCreated().toDate().toString().split(" ");
             Log.i("Date Test", date[1] + " " + date[2] + " " + date[5] + " ----");
             i.putExtra(ExpenseDetailsActivity.DATEDET, date[1] + " " + date[2] + ", " + date[5]);
+            i.putExtra("expenseID", expenseArrayList.get(expenseViewHolder.getAdapterPosition()).getExpenseID());
+            i.putExtra("priceNoFormat",expenseArrayList.get(expenseViewHolder.getAdapterPosition()).getPrice());
             parent.getContext().startActivity(i);
         });
         return expenseViewHolder;
