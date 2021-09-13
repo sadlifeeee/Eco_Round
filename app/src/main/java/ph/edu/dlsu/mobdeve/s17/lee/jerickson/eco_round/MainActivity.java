@@ -1,10 +1,15 @@
 package ph.edu.dlsu.mobdeve.s17.lee.jerickson.eco_round;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,7 +29,16 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.LuminanceSource;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.RGBLuminanceSource;
+import com.google.zxing.Reader;
+import com.google.zxing.Result;
+import com.google.zxing.common.HybridBinarizer;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.security.MessageDigest;
 
 import javax.crypto.Cipher;
@@ -119,6 +133,15 @@ public class MainActivity extends AppCompatActivity {
         googleLoginOnClick();
         loginOnClick();
         registerOnClick();
+        QRLoginOnClick();
+    }
+
+    private void QRLoginOnClick() {
+        binding.btnQrLogin.setOnClickListener(view -> {
+            Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
+            photoPickerIntent.setType("*/*");
+            startActivityForResult(photoPickerIntent, 1000);
+        });
     }
 
     private String decrypt(String hashPass , String mainKey) throws Exception {
@@ -206,6 +229,66 @@ public class MainActivity extends AppCompatActivity {
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
                 Log.w(TAG, "Google sign in failed", e);
+            }
+        } else if(requestCode == 1000) {
+            if (resultCode == RESULT_OK) {
+
+                try {
+                    final Uri imageUri = data.getData();
+
+                    final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+
+                    final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+
+                    try {
+
+                        Bitmap bMap = selectedImage;
+
+                        String contents = null;
+
+                        int[] intArray = new int[bMap.getWidth()*bMap.getHeight()];
+
+                        bMap.getPixels(intArray, 0, bMap.getWidth(), 0, 0, bMap.getWidth(), bMap.getHeight());
+
+                        LuminanceSource source = new RGBLuminanceSource(bMap.getWidth(), bMap.getHeight(), intArray);
+
+                        BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+
+                        Reader reader = new MultiFormatReader();
+
+                        Result result = reader.decode(bitmap);
+
+                        contents = result.getText();
+
+                        String[] info = contents.split(" ");
+                        String email = info[0];
+                        String password = decrypt(info[1] , mainKey);
+
+                        mAuth.signInWithEmailAndPassword(email, password)
+                                .addOnCompleteListener(task -> {
+                                    if(task.isSuccessful()){
+                                        Toast.makeText(getApplicationContext(), "Login Successful!", Toast.LENGTH_SHORT).show();
+                                        Intent goToSecond = new Intent(MainActivity.this, ListActivity.class);
+                                        startActivity(goToSecond);
+                                        finish();
+
+                                    } else {
+                                        Toast.makeText(getApplicationContext(), "Login Failed! Password or Email is incorrect" , Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+
+                    Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_LONG).show();
+                }
+
+            }else {
+                Toast.makeText(getApplicationContext(), "You haven't picked Image",Toast.LENGTH_LONG).show();
             }
         }
     }

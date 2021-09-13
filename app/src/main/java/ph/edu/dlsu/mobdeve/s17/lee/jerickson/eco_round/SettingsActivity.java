@@ -52,9 +52,10 @@ public class SettingsActivity extends AppCompatActivity {
     private void init(){
         logoutOnClick();
         budgetOnClick();
+        generateQRonClick();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestIdToken("227831008319-b6trtqhbaegtjpvqfdbo65iuvnckhn7o.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
 
@@ -97,10 +98,17 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
-
     private void budgetOnClick() {
         binding.llBudgetsettings.setOnClickListener(view -> {
             Intent i = new Intent(SettingsActivity.this, BudgetActivity.class);
+            startActivity(i);
+            finish();
+        });
+    }
+
+    private void generateQRonClick() {
+        binding.tvGenerateQRLogin.setOnClickListener(view -> {
+            Intent i = new Intent(SettingsActivity.this, generateQR.class);
             startActivity(i);
             finish();
         });

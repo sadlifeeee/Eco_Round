@@ -41,7 +41,7 @@ public class ListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list);
         binding = ActivityListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        expenses = new ArrayList<Expense>();
+        expenses = new ArrayList<>();
         db = FirebaseFirestore.getInstance();
         //expenses = DataHelper.loadExpenseData();
         EventChangeListener();

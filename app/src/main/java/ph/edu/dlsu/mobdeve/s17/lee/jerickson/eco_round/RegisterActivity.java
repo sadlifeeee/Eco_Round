@@ -95,10 +95,11 @@ public class RegisterActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             try {
                                 String hashPass = encrypt(password, mainKey);
+                                String userID = mAuth.getCurrentUser().getUid();
 
                                 User user = new User(email , hashPass);
 
-                                db.collection("users").add(user).addOnCompleteListener(task1 -> {
+                                db.collection("users").document(userID).set(user).addOnCompleteListener(task1 -> {
                                     if (task1.isSuccessful()) {
                                         Toast.makeText(getApplicationContext(), "User registered successfully!", Toast.LENGTH_SHORT).show();
                                     } else {
