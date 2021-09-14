@@ -1,5 +1,6 @@
 package ph.edu.dlsu.mobdeve.s17.lee.jerickson.eco_round;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,11 +9,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.sql.Time;
 
@@ -25,6 +32,7 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
     ImageView receiptImg, catImg;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private ActivityExpenseDetailsBinding binding;
+    FirebaseFirestore db;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,7 +40,7 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
 
         binding = ActivityExpenseDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        db = FirebaseFirestore.getInstance();
         this.category = findViewById(R.id.tv_catTitle);
         this.title = findViewById(R.id.tv_detTitle);
         this.price = findViewById(R.id.tv_detPrice);
@@ -75,9 +83,54 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
             Intent intent = new Intent(ExpenseDetailsActivity.this, ExpenseEdit.class);
             intent.putExtra("expense", exp);
             startActivity(intent);
+            deleteExpenseOnClick();
         });
 
 
+    }
+
+    private void deleteExpenseOnClick(){
+        binding.bttnDeleteDetails.setOnClickListener(view -> {
+            AlertDialog.Builder build = new AlertDialog.Builder(this);
+            build.setTitle("Delete Expense");
+            build.setMessage("Are you sure?");
+
+            build.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    deleteExpense();
+                }
+            });
+
+            build.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+
+                }
+            });
+
+            AlertDialog ad = build.create();
+            ad.show();
+        });
+    }
+
+    private void deleteExpense()
+    {
+        String expenseID;
+        expenseID = expId.getText().toString().trim();
+        db.collection("expenses").document(expenseID).delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(Task<Void> task) {
+                        if(task.isSuccessful())
+                        {
+                            Toast.makeText(ExpenseDetailsActivity.this, "Expense Deleted Successfully",
+                                    Toast.LENGTH_SHORT).show();
+                            finish();
+                            startActivity(new Intent(ExpenseDetailsActivity.this, ListActivity.class));
+                        }
+                    }
+                });
     }
 }
 
