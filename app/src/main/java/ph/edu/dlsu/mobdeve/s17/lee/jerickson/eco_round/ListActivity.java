@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -20,7 +21,9 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firestore.v1.Document;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 import ph.edu.dlsu.mobdeve.s17.lee.jerickson.eco_round.databinding.ActivityListBinding;
@@ -70,11 +73,21 @@ public class ListActivity extends AppCompatActivity {
                             {
                                 DocumentSnapshot doc = docCh.getDocument();
                                 Log.i("EXPENSE USER ID", doc.getString("userID"));
-                                Log.i("CURRENT USER ID", mAuth.getUid());
+                                Log.i("CURRENT USER ID", mAuth.getCurrentUser().getUid());
                                 Boolean match = doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid());
                                 Log.i("MATCH", String.valueOf(match));
                                 if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
-                                    expenses.add(docCh.getDocument().toObject(Expense.class));
+                                    Timestamp expiresAt = doc.getTimestamp("expiresAt");
+                                    Timestamp currDate = Timestamp.now();
+                                    if(currDate.compareTo(expiresAt) == 0 || currDate.compareTo(expiresAt) > 0)
+                                    {
+                                        String expIDtoDelete = doc.getString("expenseID");
+                                        db.collection("expenses").document(expIDtoDelete).delete();
+                                    }
+                                    else{
+                                        expenses.add(docCh.getDocument().toObject(Expense.class));
+                                    }
+
                                 }
 
                             }

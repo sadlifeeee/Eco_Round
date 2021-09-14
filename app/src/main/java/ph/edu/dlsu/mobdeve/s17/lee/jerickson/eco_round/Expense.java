@@ -5,12 +5,13 @@ import android.util.Log;
 import com.google.firebase.Timestamp;
 
 import java.io.Serializable;
+import java.util.Calendar;
 
 public class Expense implements Serializable {
     private String title, category, userID, expenseID, receiptID;
     private Double price;
     private int categoryImg;
-    private Timestamp dateCreated;
+    private Timestamp dateCreated, expiresAt;
 
     public Expense(String category,  Timestamp dateCreated, String expenseID, Double price, String receiptID, String title, String userID){
         this.title = title;
@@ -20,6 +21,15 @@ public class Expense implements Serializable {
         this.expenseID = expenseID;
         this.userID = userID;
         this.category = category.trim();
+
+        //add 30 days
+        Timestamp tempTime = dateCreated;
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(tempTime.toDate());
+        cal.add(Calendar.DAY_OF_MONTH,30);
+        this.expiresAt = new Timestamp(cal.getTime());
+
+
         if (category == "Utilities"){
             this.categoryImg = R.drawable.utilities;
         }
@@ -61,6 +71,8 @@ public class Expense implements Serializable {
         this.expenseID = expenseID;
         this.userID = userID;
         this.category = category.trim();
+
+
         if (category == "Utilities"){
             this.categoryImg = R.drawable.utilities;
         }
@@ -117,6 +129,10 @@ public class Expense implements Serializable {
 
     public Timestamp getDateCreated() {
         return dateCreated;
+    }
+
+    public Timestamp getExpiresAt() {
+        return expiresAt;
     }
 
     public int getCategoryImg() {
@@ -221,5 +237,9 @@ public class Expense implements Serializable {
 
     public void setDateCreated(Timestamp dateCreated) {
         this.dateCreated = dateCreated;
+    }
+
+    public void setExpiresAt(Timestamp expiresAt) {
+        this.expiresAt = expiresAt;
     }
 }

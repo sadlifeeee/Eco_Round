@@ -62,7 +62,7 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
         pNoFormat.setText(String.format("%.2f", i.getDoubleExtra("priceNoFormat", 0)));
         pNoFormat.setVisibility(View.INVISIBLE);
         updateExpenseOnClick();
-
+        deleteExpenseOnClick();
     }
 
     private void updateExpenseOnClick(){
@@ -83,7 +83,7 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
             Intent intent = new Intent(ExpenseDetailsActivity.this, ExpenseEdit.class);
             intent.putExtra("expense", exp);
             startActivity(intent);
-            deleteExpenseOnClick();
+
         });
 
 
