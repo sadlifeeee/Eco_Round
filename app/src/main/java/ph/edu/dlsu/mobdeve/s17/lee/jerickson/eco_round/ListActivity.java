@@ -71,9 +71,9 @@ public class ListActivity extends AppCompatActivity {
                                 DocumentSnapshot doc = docCh.getDocument();
                                 Log.i("EXPENSE USER ID", doc.getString("userID"));
                                 Log.i("CURRENT USER ID", mAuth.getUid());
-                                Boolean match = doc.getString("userID").trim().equalsIgnoreCase(mAuth.getUid());
+                                Boolean match = doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid());
                                 Log.i("MATCH", String.valueOf(match));
-                                if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getUid())){
+                                if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
                                     expenses.add(docCh.getDocument().toObject(Expense.class));
                                 }
 

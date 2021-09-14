@@ -49,8 +49,7 @@ public class ExpenseEdit extends AppCompatActivity {
 
         recPhoto.setImageResource();
         */
-
-    updateOnClick();
+        updateOnClick();
     }
     private void updateOnClick(){
         binding.btnUpdate.setOnClickListener(view -> {
