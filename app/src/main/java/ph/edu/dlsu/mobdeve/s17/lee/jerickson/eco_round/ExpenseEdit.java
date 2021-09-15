@@ -147,14 +147,16 @@ public class ExpenseEdit extends AppCompatActivity {
             newPrice = price.getText().toString().trim();
             Double updPrice = Double.parseDouble(newPrice);
             newCategory = category.getText().toString().trim();
-            //newRec = expense.getReceiptID();
+            newRec = expense.getReceiptID();
             /*
             * Insert input validation here
             *
             * */
 
+
             Expense updatedExpense = new Expense(newCategory, expense.getExpenseID(), updPrice, expense.getReceiptID(), newTitle, mAuth.getCurrentUser().getUid());
-            //uploadReceipt(newRec);
+            Log.i("EXPENSE ID", expense.getExpenseID());
+            uploadReceipt(newRec);
             db.collection("expenses").document(expense.getExpenseID()).update("category", newCategory, "price", updPrice,
                     "title", newTitle).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override

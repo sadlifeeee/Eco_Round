@@ -29,7 +29,7 @@ import ph.edu.dlsu.mobdeve.s17.lee.jerickson.eco_round.databinding.ActivityExpen
 public class ExpenseDetailsActivity extends AppCompatActivity {
     public static final String CATEGORY = "CATEGORY", TITLE = "TITLE",
             PRICE = "PRICE", DATEDET = "DATEDET", RECEIPTIMG = "RECEIPTIMG", CATEGORYPIC = "CATEGORYPIC";
-    TextView category, title, price, date, expId, pNoFormat;
+    TextView category, title, price, date, expId, pNoFormat, recHid;
     ImageView receiptImg, catImg;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private ActivityExpenseDetailsBinding binding;
@@ -50,6 +50,7 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
         this.catImg = findViewById(R.id.iv_catPic);
         this.expId = findViewById(R.id.tv_expID);
         this.pNoFormat = findViewById(R.id.tv_priceHid);
+        this.recHid = findViewById(R.id.tv_recHid);
 
         Intent i = getIntent();
         category.setText(i.getStringExtra(CATEGORY));
@@ -58,10 +59,12 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
         Picasso.with(this).load(i.getStringExtra(RECEIPTIMG)).fit().centerCrop().into(receiptImg);
         catImg.setImageResource(i.getIntExtra(CATEGORYPIC,0));
         price.setText(String.format("P %.2f", i.getDoubleExtra(PRICE,0)));
-        expId.setText((i.getStringExtra(RECEIPTIMG)));
+        expId.setText((i.getStringExtra("expenseID")));
         expId.setVisibility(View.INVISIBLE);
         pNoFormat.setText(String.format("%.2f", i.getDoubleExtra("priceNoFormat", 0)));
         pNoFormat.setVisibility(View.INVISIBLE);
+        recHid.setText(i.getStringExtra(RECEIPTIMG));
+        recHid.setVisibility(View.INVISIBLE);
         updateExpenseOnClick();
         deleteExpenseOnClick();
     }
@@ -73,7 +76,7 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
             Double fPrice = 0.00;
             categ = category.getText().toString().trim();
             titleEd = title.getText().toString().trim();
-            receipt = expId.getText().toString().trim();
+            receipt = recHid.getText().toString().trim();
             expenseID = expId.getText().toString().trim();
             tempPrice = pNoFormat.getText().toString().trim();
             Log.i("STRING PRICE", tempPrice);
