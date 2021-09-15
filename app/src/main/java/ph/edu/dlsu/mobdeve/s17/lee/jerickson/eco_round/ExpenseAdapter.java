@@ -160,7 +160,13 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
             Log.e("Text to Speech" , "Initialize Failed");
         }
     }
-
+    public void setData(ArrayList<Expense> data)
+    {
+        this.expenseArrayList.clear();
+        this.expenseArrayList.addAll(data);
+        System.out.println("000000000000000000000000000000000000000000000000000000000000000");
+        notifyDataSetChanged();
+    }
     protected class ExpenseViewHolder extends RecyclerView.ViewHolder{
         ImageButton ib_tts;
         ImageView iv_category;

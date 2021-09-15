@@ -35,12 +35,10 @@
                     android:scaleType="fitCenter"
                     android:background="@android:color/transparent" />
 
-                <TextView
+                <Spinner
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Arrange by"
-                    android:textStyle="bold"
-                    android:id="@+id/tv_arrangeBy"
+                    android:id="@+id/spin_sortBy"
                     />
 
             </LinearLayout>
@@ -61,14 +59,14 @@
                     android:adjustViewBounds="true"
                     android:background="@android:color/transparent"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/filter" />
+                    android:src="@drawable/filter"
+                    android:layout_marginRight="10dp"/>
 
-                <TextView
-                    android:id="@+id/tv_filterBy"
-                    android:layout_width="wrap_content"
+                <Spinner
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:text="Filter by"
-                    android:textStyle="bold" />
+                    android:id="@+id/spin_filterBy"
+                    />
 
             </LinearLayout>
 
