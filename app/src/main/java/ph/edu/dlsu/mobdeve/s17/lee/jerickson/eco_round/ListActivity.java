@@ -58,6 +58,20 @@ public class ListActivity extends AppCompatActivity {
         binding.rvExpenses.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         binding.rvExpenses.setAdapter(expenseAdapter);
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                EventChangeListener();
+
+                binding.rvExpenses.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        expenseAdapter.setData(expenses);
+                    }
+                });
+            }
+        }).start();
+
         //Sort Spinner
         sortSpinner = binding.spinSortBy;
         ArrayAdapter<CharSequence> sortOpts = ArrayAdapter.createFromResource(this,R.array.sort_options,
@@ -75,19 +89,6 @@ public class ListActivity extends AppCompatActivity {
         filterSpinner.setAdapter(filtOpts);
         setFilterOption();
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                EventChangeListener();
-
-                binding.rvExpenses.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        expenseAdapter.setData(expenses);
-                    }
-                });
-            }
-        }).start();
 
         addExp();
         navigate();
