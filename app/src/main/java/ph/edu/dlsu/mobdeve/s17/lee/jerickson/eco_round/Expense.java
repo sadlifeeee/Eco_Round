@@ -35,8 +35,6 @@ public class Expense implements Serializable {
         }
         else if(category.equalsIgnoreCase("Food")){
             this.categoryImg = R.drawable.food;
-            System.out.println("HELLOOOOO PUMASOK DITO HELLOOOO");
-            Log.i("Test", " I am hereeee");
         }
         else if(category == "Transportation") {
             this.categoryImg = R.drawable.transpo;
@@ -78,8 +76,6 @@ public class Expense implements Serializable {
         }
         else if(category.equalsIgnoreCase("Food")){
             this.categoryImg = R.drawable.food;
-            System.out.println("HELLOOOOO PUMASOK DITO HELLOOOO");
-            Log.i("Test", " I am hereeee");
         }
         else if(category == "Transportation") {
             this.categoryImg = R.drawable.transpo;

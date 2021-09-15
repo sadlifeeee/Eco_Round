@@ -81,37 +81,12 @@ public class generateQR extends AppCompatActivity {
         });
 
         binding.btnSave.setOnClickListener(view -> {
-            /*
-            try {
-                File sdCard = Environment.getExternalStorageDirectory();
-                File dir = new File(sdCard.getAbsolutePath() + "/SaveImages");
-                if(!dir.exists())
-                    dir.mkdir();
-
-
-                BitmapDrawable drawable = (BitmapDrawable) binding.ivGeneratedQR.getDrawable();
-                Bitmap bitmap = drawable.getBitmap();
-
-                File file = new File(dir,userID +".jpg");
-
-                FileOutputStream outputStream = new FileOutputStream(file);
-                bitmap.compress(Bitmap.CompressFormat.JPEG,100,outputStream);
-                Toast.makeText(generateQR.this,"Successfuly Saved",Toast.LENGTH_SHORT).show();
-                outputStream.flush();
-                outputStream.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            */
 
             BitmapDrawable drawable = (BitmapDrawable) binding.ivGeneratedQR.getDrawable();
             Bitmap bitmap = drawable.getBitmap();
 
 
             String savePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM) + "/Camera/";
-            Log.e("PANSININ" , savePath);
             QRGSaver qrgSaver = new QRGSaver();
 
             boolean save = qrgSaver.save(savePath, userID, bitmap, QRGContents.ImageType.IMAGE_JPEG);

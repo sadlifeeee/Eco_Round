@@ -32,28 +32,27 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
     public int getItemCount() {
         return expenseArrayList.size();
     }
+
     @Override
-    public ExpenseViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+    public ExpenseAdapter.ExpenseViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_data,parent,false);
         ExpenseViewHolder expenseViewHolder = new ExpenseViewHolder(view);
 
         mTTS = new TextToSpeech(context.getApplicationContext(), this);
 
-        expenseViewHolder.itemView.setOnClickListener(v ->{
+        expenseViewHolder.itemView.setOnClickListener(v -> {
             Intent i = new Intent(parent.getContext(), ExpenseDetailsActivity.class);
             i.putExtra(ExpenseDetailsActivity.CATEGORY, expenseArrayList.get(expenseViewHolder.getAdapterPosition()).getCategory());
             i.putExtra(ExpenseDetailsActivity.TITLE, expenseArrayList.get(expenseViewHolder.getAdapterPosition()).getTitle());
             i.putExtra(ExpenseDetailsActivity.PRICE, expenseArrayList.get(expenseViewHolder.getAdapterPosition()).getPrice());
             String categ = expenseArrayList.get(expenseViewHolder.getAdapterPosition()).getCategory().trim();
-            Log.i("Test", " I am hereeee");
+
             int catImg = 0;
             if (categ.equalsIgnoreCase("Utilities")){
                 catImg = R.drawable.utilities;
             }
             else if(categ.equalsIgnoreCase("Food")){
                 catImg = R.drawable.food;
-                System.out.println("HELLOOOOO PUMASOK DITO HELLOOOO");
-                Log.i("Test", categ);
             }
             else if(categ.equalsIgnoreCase("Transportation")) {
                 catImg = R.drawable.transpo;
@@ -79,6 +78,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
             else if(categ.equalsIgnoreCase("Shopping")) {
                 catImg = R.drawable.shopping;
             }
+
             i.putExtra(ExpenseDetailsActivity.CATEGORYPIC, catImg);
             i.putExtra(ExpenseDetailsActivity.RECEIPTIMG, expenseArrayList.get(expenseViewHolder.getAdapterPosition()).getReceiptID());
             String[] date = expenseArrayList.get(expenseViewHolder.getAdapterPosition()).getDateCreated().toDate().toString().split(" ");
@@ -88,12 +88,13 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
             i.putExtra("priceNoFormat",expenseArrayList.get(expenseViewHolder.getAdapterPosition()).getPrice());
             parent.getContext().startActivity(i);
         });
+
         return expenseViewHolder;
     }
 
 
     @Override
-    public void onBindViewHolder(@NonNull ExpenseViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ExpenseAdapter.ExpenseViewHolder holder, int position) {
         holder.tv_expTitle.setText(expenseArrayList.get(position).getTitle());
         //holder.iv_receipt.setImageResource(expenseArrayList.get(position).getReceiptID());
         holder.tv_expPrice.setText(String.format("Php %.2f",expenseArrayList.get(position).getPrice()));
@@ -143,7 +144,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
             mTTS.setSpeechRate(1f);
             mTTS.setPitch(1f);
 
-            mTTS.speak(item , TextToSpeech.QUEUE_FLUSH, null);
+            mTTS.speak(item , TextToSpeech.QUEUE_FLUSH, null , null);
 
         });
     }
@@ -167,8 +168,9 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         TextView tv_expTitle;
         TextView tv_expPrice;
         ImageView iv_receipt;
+
         public ExpenseViewHolder(View view){
-            super(view);
+           super(view);
            iv_category = view.findViewById(R.id.iv_category);
            iv_receipt = view.findViewById(R.id.iv_receipt);
            tv_expTitle = view.findViewById(R.id.tv_expTitle);
