@@ -184,271 +184,393 @@ public class ListActivity extends AppCompatActivity {
                }
                else if(sortSel.equalsIgnoreCase("Oldest") && filtSel.equalsIgnoreCase("All"))
                {
-                   db.collection("expenses").orderBy("dateCreated", Query.Direction.ASCENDING)
-                           .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                               @Override
-                               public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                   expenses.clear();
+                   new Thread(new Runnable() {
+                       @Override
+                       public void run() {
+                           db.collection("expenses").orderBy("dateCreated", Query.Direction.ASCENDING)
+                                   .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                       @Override
+                                       public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                                   if(error != null)
-                                   {
-                                       Log.e("Firestore error", error.getMessage());
-                                       return;
-                                   }
-                                   for(DocumentChange docCh : value.getDocumentChanges()){
-
-                                       if (docCh.getType() == DocumentChange.Type.ADDED)
-                                       {
-                                           DocumentSnapshot doc = docCh.getDocument();
-                                           if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
-                                               expenses.add(docCh.getDocument().toObject(Expense.class));
-                                               Log.i("WOY", "---------------------HHH------------------------");
-
+                                           if(error != null)
+                                           {
+                                               Log.e("Firestore error", error.getMessage());
+                                               return;
                                            }
+                                           for(DocumentChange docCh : value.getDocumentChanges()){
 
+                                               if (docCh.getType() == DocumentChange.Type.ADDED)
+                                               {
+                                                   DocumentSnapshot doc = docCh.getDocument();
+                                                   if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
+                                                       expenses.add(docCh.getDocument().toObject(Expense.class));
+                                                   }
+
+                                               }
+                                           }
                                        }
-                                   }
-                                   //expenseAdapter.setData(expenses);
+                                   });
+                           binding.rvExpenses.post(new Runnable() {
+                               @Override
+                               public void run() {
+                                   expenseAdapter.setData(expenses);
                                }
                            });
-                   expenseAdapter.setData(expenses);
+                       }
+                   }).start();
+
                }
                else if(sortSel.equalsIgnoreCase("Oldest") && !filtSel.equalsIgnoreCase("All"))
                {
-                   db.collection("expenses").orderBy("dateCreated", Query.Direction.ASCENDING).whereEqualTo("category", filtSel)
-                           .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                               @Override
-                               public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                   expenses.clear();
+                   new Thread(new Runnable() {
+                       @Override
+                       public void run() {
+                           db.collection("expenses").orderBy("dateCreated", Query.Direction.ASCENDING).whereEqualTo("category", filtSel)
+                                   .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                       @Override
+                                       public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                                   if(error != null)
-                                   {
-                                       Log.e("Firestore error", error.getMessage());
-                                       return;
-                                   }
-                                   for(DocumentChange docCh : value.getDocumentChanges()){
+                                           if(error != null)
+                                           {
+                                               Log.e("Firestore error", error.getMessage());
+                                               return;
+                                           }
+                                           for(DocumentChange docCh : value.getDocumentChanges()){
 
-                                       if (docCh.getType() == DocumentChange.Type.ADDED)
-                                       {
-                                           DocumentSnapshot doc = docCh.getDocument();
-                                           if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
-                                               expenses.add(docCh.getDocument().toObject(Expense.class));
+                                               if (docCh.getType() == DocumentChange.Type.ADDED)
+                                               {
+                                                   DocumentSnapshot doc = docCh.getDocument();
+                                                   if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
+                                                       expenses.add(docCh.getDocument().toObject(Expense.class));
+                                                   }
+
+                                               }
                                            }
 
                                        }
-                                   }
-
+                                   });
+                           binding.rvExpenses.post(new Runnable() {
+                               @Override
+                               public void run() {
+                                   expenseAdapter.setData(expenses);
                                }
                            });
-                   expenseAdapter.setData(expenses);
+                       }
+                   }).start();
                }
                else if(sortSel.equalsIgnoreCase("Most Expensive") && filtSel.equalsIgnoreCase("All"))
                {
-                   db.collection("expenses").orderBy("price", Query.Direction.DESCENDING)
-                           .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                               @Override
-                               public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                   expenses.clear();
+                   new Thread(new Runnable() {
+                       @Override
+                       public void run() {
+                           db.collection("expenses").orderBy("price", Query.Direction.DESCENDING)
+                                   .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                       @Override
+                                       public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                                   if(error != null)
-                                   {
-                                       Log.e("Firestore error", error.getMessage());
-                                       return;
-                                   }
-                                   for(DocumentChange docCh : value.getDocumentChanges()){
-
-                                       if (docCh.getType() == DocumentChange.Type.ADDED)
-                                       {
-                                           DocumentSnapshot doc = docCh.getDocument();
-                                           if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
-                                               expenses.add(docCh.getDocument().toObject(Expense.class));
+                                           if(error != null)
+                                           {
+                                               Log.e("Firestore error", error.getMessage());
+                                               return;
                                            }
+                                           for(DocumentChange docCh : value.getDocumentChanges()){
 
+                                               if (docCh.getType() == DocumentChange.Type.ADDED)
+                                               {
+                                                   DocumentSnapshot doc = docCh.getDocument();
+                                                   if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
+                                                       expenses.add(docCh.getDocument().toObject(Expense.class));
+                                                   }
+
+                                               }
+                                           }
                                        }
-                                   }
+                                   });
+                           binding.rvExpenses.post(new Runnable() {
+                               @Override
+                               public void run() {
+                                   expenseAdapter.setData(expenses);
                                }
                            });
+                       }
+                   }).start();
+
                }
                else if(sortSel.equalsIgnoreCase("Most Expensive") && !filtSel.equalsIgnoreCase("All"))
                {
-                   db.collection("expenses").orderBy("price", Query.Direction.DESCENDING).whereEqualTo("category", filtSel)
-                           .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                               @Override
-                               public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                   expenses.clear();
+                   new Thread(new Runnable() {
+                       @Override
+                       public void run() {
+                           db.collection("expenses").orderBy("price", Query.Direction.DESCENDING).whereEqualTo("category", filtSel)
+                                   .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                       @Override
+                                       public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                                   if(error != null)
-                                   {
-                                       Log.e("Firestore error", error.getMessage());
-                                       return;
-                                   }
-                                   for(DocumentChange docCh : value.getDocumentChanges()){
-
-                                       if (docCh.getType() == DocumentChange.Type.ADDED)
-                                       {
-                                           DocumentSnapshot doc = docCh.getDocument();
-                                           if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
-                                               expenses.add(docCh.getDocument().toObject(Expense.class));
+                                           if(error != null)
+                                           {
+                                               Log.e("Firestore error", error.getMessage());
+                                               return;
                                            }
+                                           for(DocumentChange docCh : value.getDocumentChanges()){
 
+                                               if (docCh.getType() == DocumentChange.Type.ADDED)
+                                               {
+                                                   DocumentSnapshot doc = docCh.getDocument();
+                                                   if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
+                                                       expenses.add(docCh.getDocument().toObject(Expense.class));
+                                                   }
+
+                                               }
+                                           }
                                        }
-                                   }
+                                   });
+                           binding.rvExpenses.post(new Runnable() {
+                               @Override
+                               public void run() {
+                                   expenseAdapter.setData(expenses);
                                }
                            });
+                       }
+                   }).start();
+
                }
                else if(sortSel.equalsIgnoreCase("Cheapest") && filtSel.equalsIgnoreCase("All"))
                {
-                   db.collection("expenses").orderBy("price", Query.Direction.ASCENDING)
-                           .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                               @Override
-                               public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                   expenses.clear();
+                   new Thread(new Runnable() {
+                       @Override
+                       public void run() {
+                           db.collection("expenses").orderBy("price", Query.Direction.ASCENDING)
+                                   .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                       @Override
+                                       public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                                   if(error != null)
-                                   {
-                                       Log.e("Firestore error", error.getMessage());
-                                       return;
-                                   }
-                                   for(DocumentChange docCh : value.getDocumentChanges()){
-
-                                       if (docCh.getType() == DocumentChange.Type.ADDED)
-                                       {
-                                           DocumentSnapshot doc = docCh.getDocument();
-                                           if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
-                                               expenses.add(docCh.getDocument().toObject(Expense.class));
+                                           if(error != null)
+                                           {
+                                               Log.e("Firestore error", error.getMessage());
+                                               return;
                                            }
+                                           for(DocumentChange docCh : value.getDocumentChanges()){
 
+                                               if (docCh.getType() == DocumentChange.Type.ADDED)
+                                               {
+                                                   DocumentSnapshot doc = docCh.getDocument();
+                                                   if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
+                                                       expenses.add(docCh.getDocument().toObject(Expense.class));
+                                                   }
+
+                                               }
+                                           }
                                        }
-                                   }
+                                   });
+                           binding.rvExpenses.post(new Runnable() {
+                               @Override
+                               public void run() {
+                                   expenseAdapter.setData(expenses);
                                }
                            });
+                       }
+                   }).start();
+
                }
                else if(sortSel.equalsIgnoreCase("Cheapest") && !filtSel.equalsIgnoreCase("All"))
                {
-                   db.collection("expenses").orderBy("price", Query.Direction.ASCENDING).whereEqualTo("category", filtSel)
-                           .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                               @Override
-                               public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                   expenses.clear();
+                   new Thread(new Runnable() {
+                       @Override
+                       public void run() {
+                           db.collection("expenses").orderBy("price", Query.Direction.ASCENDING).whereEqualTo("category", filtSel)
+                                   .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                       @Override
+                                       public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                                   if(error != null)
-                                   {
-                                       Log.e("Firestore error", error.getMessage());
-                                       return;
-                                   }
-                                   for(DocumentChange docCh : value.getDocumentChanges()){
-
-                                       if (docCh.getType() == DocumentChange.Type.ADDED)
-                                       {
-                                           DocumentSnapshot doc = docCh.getDocument();
-                                           if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
-                                               expenses.add(docCh.getDocument().toObject(Expense.class));
+                                           if(error != null)
+                                           {
+                                               Log.e("Firestore error", error.getMessage());
+                                               return;
                                            }
+                                           for(DocumentChange docCh : value.getDocumentChanges()){
 
+                                               if (docCh.getType() == DocumentChange.Type.ADDED)
+                                               {
+                                                   DocumentSnapshot doc = docCh.getDocument();
+                                                   if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
+                                                       expenses.add(docCh.getDocument().toObject(Expense.class));
+                                                   }
+
+                                               }
+                                           }
                                        }
-                                   }
+                                   });
+                           binding.rvExpenses.post(new Runnable() {
+                               @Override
+                               public void run() {
+                                   expenseAdapter.setData(expenses);
                                }
                            });
+                       }
+                   }).start();
+
                }
                else if(sortSel.equalsIgnoreCase("A to Z") && filtSel.equalsIgnoreCase("All"))
                {
-                   db.collection("expenses").orderBy("title", Query.Direction.ASCENDING)
-                           .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                               @Override
-                               public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                   expenses.clear();
+                   new Thread(new Runnable() {
+                       @Override
+                       public void run() {
+                           db.collection("expenses").orderBy("title", Query.Direction.ASCENDING)
+                                   .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                       @Override
+                                       public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                                   if(error != null)
-                                   {
-                                       Log.e("Firestore error", error.getMessage());
-                                       return;
-                                   }
-                                   for(DocumentChange docCh : value.getDocumentChanges()){
-
-                                       if (docCh.getType() == DocumentChange.Type.ADDED)
-                                       {
-                                           DocumentSnapshot doc = docCh.getDocument();
-                                           if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
-                                               expenses.add(docCh.getDocument().toObject(Expense.class));
+                                           if(error != null)
+                                           {
+                                               Log.e("Firestore error", error.getMessage());
+                                               return;
                                            }
+                                           for(DocumentChange docCh : value.getDocumentChanges()){
 
+                                               if (docCh.getType() == DocumentChange.Type.ADDED)
+                                               {
+                                                   DocumentSnapshot doc = docCh.getDocument();
+                                                   if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
+                                                       expenses.add(docCh.getDocument().toObject(Expense.class));
+                                                   }
+
+                                               }
+                                           }
                                        }
-                                   }
+                                   });
+                           binding.rvExpenses.post(new Runnable() {
+                               @Override
+                               public void run() {
+                                   expenseAdapter.setData(expenses);
                                }
                            });
+                       }
+                   }).start();
+
                }
                else if(sortSel.equalsIgnoreCase("A to Z") && !filtSel.equalsIgnoreCase("All"))
                {
-                   db.collection("expenses").orderBy("title", Query.Direction.ASCENDING).whereEqualTo("category", filtSel)
-                           .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                               @Override
-                               public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                   expenses.clear();
+                   new Thread(new Runnable() {
+                       @Override
+                       public void run() {
+                           db.collection("expenses").orderBy("title", Query.Direction.ASCENDING).whereEqualTo("category", filtSel)
+                                   .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                       @Override
+                                       public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                                   if(error != null)
-                                   {
-                                       Log.e("Firestore error", error.getMessage());
-                                       return;
-                                   }
-                                   for(DocumentChange docCh : value.getDocumentChanges()){
-
-                                       if (docCh.getType() == DocumentChange.Type.ADDED)
-                                       {
-                                           DocumentSnapshot doc = docCh.getDocument();
-                                           if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
-                                               expenses.add(docCh.getDocument().toObject(Expense.class));
+                                           if(error != null)
+                                           {
+                                               Log.e("Firestore error", error.getMessage());
+                                               return;
                                            }
+                                           for(DocumentChange docCh : value.getDocumentChanges()){
 
+                                               if (docCh.getType() == DocumentChange.Type.ADDED)
+                                               {
+                                                   DocumentSnapshot doc = docCh.getDocument();
+                                                   if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
+                                                       expenses.add(docCh.getDocument().toObject(Expense.class));
+                                                   }
+
+                                               }
+                                           }
                                        }
-                                   }
+                                   });
+                           binding.rvExpenses.post(new Runnable() {
+                               @Override
+                               public void run() {
+                                   expenseAdapter.setData(expenses);
                                }
                            });
+                       }
+                   }).start();
+
                }
                else if(sortSel.equalsIgnoreCase("Z to A") && filtSel.equalsIgnoreCase("All"))
                {
-                   db.collection("expenses").orderBy("title", Query.Direction.DESCENDING)
-                           .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                               @Override
-                               public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                   expenses.clear();
+                   new Thread(new Runnable() {
+                       @Override
+                       public void run() {
+                           db.collection("expenses").orderBy("title", Query.Direction.DESCENDING)
+                                   .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                       @Override
+                                       public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                                   if(error != null)
-                                   {
-                                       Log.e("Firestore error", error.getMessage());
-                                       return;
-                                   }
-                                   for(DocumentChange docCh : value.getDocumentChanges()){
-
-                                       if (docCh.getType() == DocumentChange.Type.ADDED)
-                                       {
-                                           DocumentSnapshot doc = docCh.getDocument();
-                                           if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
-                                               expenses.add(docCh.getDocument().toObject(Expense.class));
+                                           if(error != null)
+                                           {
+                                               Log.e("Firestore error", error.getMessage());
+                                               return;
                                            }
+                                           for(DocumentChange docCh : value.getDocumentChanges()){
 
+                                               if (docCh.getType() == DocumentChange.Type.ADDED)
+                                               {
+                                                   DocumentSnapshot doc = docCh.getDocument();
+                                                   if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
+                                                       expenses.add(docCh.getDocument().toObject(Expense.class));
+                                                   }
+
+                                               }
+                                           }
                                        }
-                                   }
+                                   });
+                           binding.rvExpenses.post(new Runnable() {
+                               @Override
+                               public void run() {
+                                   expenseAdapter.setData(expenses);
                                }
                            });
+                       }
+                   }).start();
+
                }
                else if(sortSel.equalsIgnoreCase("Z to A") && !filtSel.equalsIgnoreCase("All"))
                {
-                   db.collection("expenses").orderBy("title", Query.Direction.DESCENDING).whereEqualTo("category", filtSel)
-                           .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                               @Override
-                               public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                   expenses.clear();
+                   new Thread(new Runnable() {
+                       @Override
+                       public void run() {
+                           db.collection("expenses").orderBy("title", Query.Direction.DESCENDING).whereEqualTo("category", filtSel)
+                                   .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                       @Override
+                                       public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                                   if(error != null)
-                                   {
-                                       Log.e("Firestore error", error.getMessage());
-                                       return;
-                                   }
-                                   for(DocumentChange docCh : value.getDocumentChanges()){
-
-                                       if (docCh.getType() == DocumentChange.Type.ADDED)
-                                       {
-                                           DocumentSnapshot doc = docCh.getDocument();
-                                           if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
-                                               expenses.add(docCh.getDocument().toObject(Expense.class));
+                                           if(error != null)
+                                           {
+                                               Log.e("Firestore error", error.getMessage());
+                                               return;
                                            }
+                                           for(DocumentChange docCh : value.getDocumentChanges()){
 
+                                               if (docCh.getType() == DocumentChange.Type.ADDED)
+                                               {
+                                                   DocumentSnapshot doc = docCh.getDocument();
+                                                   if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
+                                                       expenses.add(docCh.getDocument().toObject(Expense.class));
+                                                   }
+
+                                               }
+                                           }
                                        }
-                                   }
+                                   });
+                           binding.rvExpenses.post(new Runnable() {
+                               @Override
+                               public void run() {
+                                   expenseAdapter.setData(expenses);
                                }
                            });
+                       }
+                   }).start();
                }
-
            }
 
            @Override
@@ -466,318 +588,479 @@ public class ListActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 filtSel = adapterView.getItemAtPosition(i).toString();
-                expenses.clear();
+
                 if(sortSel.equalsIgnoreCase("Latest") && filtSel.equalsIgnoreCase("All"))
                 {
-                    db.collection("expenses").orderBy("dateCreated", Query.Direction.DESCENDING)
-                            .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                @Override
-                                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                    expenses.clear();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
 
-                                    if(error != null)
-                                    {
-                                        Log.e("Firestore error", error.getMessage());
-                                        return;
-                                    }
-                                    for(DocumentChange docCh : value.getDocumentChanges()){
+                            db.collection("expenses").orderBy("dateCreated", Query.Direction.DESCENDING)
+                                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                                        if (docCh.getType() == DocumentChange.Type.ADDED)
-                                        {
-                                            DocumentSnapshot doc = docCh.getDocument();
-                                            if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
-                                                expenses.add(docCh.getDocument().toObject(Expense.class));
+                                            if(error != null)
+                                            {
+                                                Log.e("Firestore error", error.getMessage());
+                                                return;
                                             }
+                                            for(DocumentChange docCh : value.getDocumentChanges()){
 
+                                                if (docCh.getType() == DocumentChange.Type.ADDED)
+                                                {
+                                                    DocumentSnapshot doc = docCh.getDocument();
+                                                    if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
+                                                        expenses.add(docCh.getDocument().toObject(Expense.class));
+
+                                                    }
+
+                                                }
+                                            }
                                         }
-                                    }
+                                    });
+
+                            binding.rvExpenses.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    expenseAdapter.setData(expenses);
                                 }
                             });
+                        }
+                    }).start();
+
                 }
-                else if(sortSel.equalsIgnoreCase("Latest") && !filtSel.equalsIgnoreCase("All"))
+                else if(sortSel.equalsIgnoreCase("Latest") && !(filtSel.equalsIgnoreCase("All")))
                 {
-                    db.collection("expenses").orderBy("dateCreated", Query.Direction.DESCENDING).whereEqualTo("category", filtSel)
-                            .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                @Override
-                                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                                    if(error != null)
-                                    {
-                                        Log.e("Firestore error", error.getMessage());
-                                        return;
-                                    }
-                                    for(DocumentChange docCh : value.getDocumentChanges()){
+                    expenses.clear();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
 
-                                        if (docCh.getType() == DocumentChange.Type.ADDED)
-                                        {
-                                            DocumentSnapshot doc = docCh.getDocument();
-                                            if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
-                                                expenses.add(docCh.getDocument().toObject(Expense.class));
+                            db.collection("expenses").orderBy("dateCreated", Query.Direction.DESCENDING).whereEqualTo("category", filtSel)
+                                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+
+                                            if(error != null)
+                                            {
+                                                Log.e("Firestore error", error.getMessage());
+                                                return;
                                             }
+                                            for(DocumentChange docCh : value.getDocumentChanges()){
 
+                                                if (docCh.getType() == DocumentChange.Type.ADDED)
+                                                {
+                                                    DocumentSnapshot doc = docCh.getDocument();
+                                                    if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
+                                                        expenses.add(docCh.getDocument().toObject(Expense.class));
+                                                    }
+
+                                                }
+                                            }
                                         }
-                                    }
+                                    });
+
+                            binding.rvExpenses.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    expenseAdapter.setData(expenses);
                                 }
                             });
+                        }
+                    }).start();
+
                 }
                 else if(sortSel.equalsIgnoreCase("Oldest") && filtSel.equalsIgnoreCase("All"))
                 {
-                    db.collection("expenses").orderBy("dateCreated", Query.Direction.ASCENDING)
-                            .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                @Override
-                                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                    expenses.clear();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            db.collection("expenses").orderBy("dateCreated", Query.Direction.ASCENDING)
+                                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                                    if(error != null)
-                                    {
-                                        Log.e("Firestore error", error.getMessage());
-                                        return;
-                                    }
-                                    for(DocumentChange docCh : value.getDocumentChanges()){
-
-                                        if (docCh.getType() == DocumentChange.Type.ADDED)
-                                        {
-                                            DocumentSnapshot doc = docCh.getDocument();
-                                            if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
-                                                expenses.add(docCh.getDocument().toObject(Expense.class));
+                                            if(error != null)
+                                            {
+                                                Log.e("Firestore error", error.getMessage());
+                                                return;
                                             }
+                                            for(DocumentChange docCh : value.getDocumentChanges()){
 
+                                                if (docCh.getType() == DocumentChange.Type.ADDED)
+                                                {
+                                                    DocumentSnapshot doc = docCh.getDocument();
+                                                    if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
+                                                        expenses.add(docCh.getDocument().toObject(Expense.class));
+                                                    }
+
+                                                }
+                                            }
                                         }
-                                    }
+                                    });
+                            binding.rvExpenses.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    expenseAdapter.setData(expenses);
                                 }
                             });
+                        }
+                    }).start();
+
                 }
                 else if(sortSel.equalsIgnoreCase("Oldest") && !filtSel.equalsIgnoreCase("All"))
                 {
-                    db.collection("expenses").orderBy("dateCreated", Query.Direction.ASCENDING).whereEqualTo("category", filtSel)
-                            .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                @Override
-                                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                    expenses.clear();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            db.collection("expenses").orderBy("dateCreated", Query.Direction.ASCENDING).whereEqualTo("category", filtSel)
+                                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                                    if(error != null)
-                                    {
-                                        Log.e("Firestore error", error.getMessage());
-                                        return;
-                                    }
-                                    for(DocumentChange docCh : value.getDocumentChanges()){
+                                            if(error != null)
+                                            {
+                                                Log.e("Firestore error", error.getMessage());
+                                                return;
+                                            }
+                                            for(DocumentChange docCh : value.getDocumentChanges()){
 
-                                        if (docCh.getType() == DocumentChange.Type.ADDED)
-                                        {
-                                            DocumentSnapshot doc = docCh.getDocument();
-                                            if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
-                                                expenses.add(docCh.getDocument().toObject(Expense.class));
+                                                if (docCh.getType() == DocumentChange.Type.ADDED)
+                                                {
+                                                    DocumentSnapshot doc = docCh.getDocument();
+                                                    if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
+                                                        expenses.add(docCh.getDocument().toObject(Expense.class));
+                                                    }
+
+                                                }
                                             }
 
                                         }
-                                    }
+                                    });
+                            binding.rvExpenses.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    expenseAdapter.setData(expenses);
                                 }
                             });
+                        }
+                    }).start();
                 }
                 else if(sortSel.equalsIgnoreCase("Most Expensive") && filtSel.equalsIgnoreCase("All"))
                 {
-                    db.collection("expenses").orderBy("price", Query.Direction.DESCENDING)
-                            .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                @Override
-                                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                    expenses.clear();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            db.collection("expenses").orderBy("price", Query.Direction.DESCENDING)
+                                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                                    if(error != null)
-                                    {
-                                        Log.e("Firestore error", error.getMessage());
-                                        return;
-                                    }
-                                    for(DocumentChange docCh : value.getDocumentChanges()){
-
-                                        if (docCh.getType() == DocumentChange.Type.ADDED)
-                                        {
-                                            DocumentSnapshot doc = docCh.getDocument();
-                                            if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
-                                                expenses.add(docCh.getDocument().toObject(Expense.class));
+                                            if(error != null)
+                                            {
+                                                Log.e("Firestore error", error.getMessage());
+                                                return;
                                             }
+                                            for(DocumentChange docCh : value.getDocumentChanges()){
 
+                                                if (docCh.getType() == DocumentChange.Type.ADDED)
+                                                {
+                                                    DocumentSnapshot doc = docCh.getDocument();
+                                                    if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
+                                                        expenses.add(docCh.getDocument().toObject(Expense.class));
+                                                    }
+
+                                                }
+                                            }
                                         }
-                                    }
+                                    });
+                            binding.rvExpenses.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    expenseAdapter.setData(expenses);
                                 }
                             });
+                        }
+                    }).start();
+
                 }
                 else if(sortSel.equalsIgnoreCase("Most Expensive") && !filtSel.equalsIgnoreCase("All"))
                 {
-                    db.collection("expenses").orderBy("price", Query.Direction.DESCENDING).whereEqualTo("category", filtSel)
-                            .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                @Override
-                                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                    expenses.clear();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            db.collection("expenses").orderBy("price", Query.Direction.DESCENDING).whereEqualTo("category", filtSel)
+                                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                                    if(error != null)
-                                    {
-                                        Log.e("Firestore error", error.getMessage());
-                                        return;
-                                    }
-                                    for(DocumentChange docCh : value.getDocumentChanges()){
-
-                                        if (docCh.getType() == DocumentChange.Type.ADDED)
-                                        {
-                                            DocumentSnapshot doc = docCh.getDocument();
-                                            if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
-                                                expenses.add(docCh.getDocument().toObject(Expense.class));
+                                            if(error != null)
+                                            {
+                                                Log.e("Firestore error", error.getMessage());
+                                                return;
                                             }
+                                            for(DocumentChange docCh : value.getDocumentChanges()){
 
+                                                if (docCh.getType() == DocumentChange.Type.ADDED)
+                                                {
+                                                    DocumentSnapshot doc = docCh.getDocument();
+                                                    if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
+                                                        expenses.add(docCh.getDocument().toObject(Expense.class));
+                                                    }
+
+                                                }
+                                            }
                                         }
-                                    }
+                                    });
+                            binding.rvExpenses.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    expenseAdapter.setData(expenses);
                                 }
                             });
+                        }
+                    }).start();
+
                 }
                 else if(sortSel.equalsIgnoreCase("Cheapest") && filtSel.equalsIgnoreCase("All"))
                 {
-                    db.collection("expenses").orderBy("price", Query.Direction.ASCENDING)
-                            .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                @Override
-                                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                    expenses.clear();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            db.collection("expenses").orderBy("price", Query.Direction.ASCENDING)
+                                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                                    if(error != null)
-                                    {
-                                        Log.e("Firestore error", error.getMessage());
-                                        return;
-                                    }
-                                    for(DocumentChange docCh : value.getDocumentChanges()){
-
-                                        if (docCh.getType() == DocumentChange.Type.ADDED)
-                                        {
-                                            DocumentSnapshot doc = docCh.getDocument();
-                                            if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
-                                                expenses.add(docCh.getDocument().toObject(Expense.class));
+                                            if(error != null)
+                                            {
+                                                Log.e("Firestore error", error.getMessage());
+                                                return;
                                             }
+                                            for(DocumentChange docCh : value.getDocumentChanges()){
 
+                                                if (docCh.getType() == DocumentChange.Type.ADDED)
+                                                {
+                                                    DocumentSnapshot doc = docCh.getDocument();
+                                                    if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
+                                                        expenses.add(docCh.getDocument().toObject(Expense.class));
+                                                    }
+
+                                                }
+                                            }
                                         }
-                                    }
+                                    });
+                            binding.rvExpenses.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    expenseAdapter.setData(expenses);
                                 }
                             });
+                        }
+                    }).start();
+
                 }
                 else if(sortSel.equalsIgnoreCase("Cheapest") && !filtSel.equalsIgnoreCase("All"))
                 {
-                    db.collection("expenses").orderBy("price", Query.Direction.ASCENDING).whereEqualTo("category", filtSel)
-                            .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                @Override
-                                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                    expenses.clear();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            db.collection("expenses").orderBy("price", Query.Direction.ASCENDING).whereEqualTo("category", filtSel)
+                                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                                    if(error != null)
-                                    {
-                                        Log.e("Firestore error", error.getMessage());
-                                        return;
-                                    }
-                                    for(DocumentChange docCh : value.getDocumentChanges()){
-
-                                        if (docCh.getType() == DocumentChange.Type.ADDED)
-                                        {
-                                            DocumentSnapshot doc = docCh.getDocument();
-                                            if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
-                                                expenses.add(docCh.getDocument().toObject(Expense.class));
+                                            if(error != null)
+                                            {
+                                                Log.e("Firestore error", error.getMessage());
+                                                return;
                                             }
+                                            for(DocumentChange docCh : value.getDocumentChanges()){
 
+                                                if (docCh.getType() == DocumentChange.Type.ADDED)
+                                                {
+                                                    DocumentSnapshot doc = docCh.getDocument();
+                                                    if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
+                                                        expenses.add(docCh.getDocument().toObject(Expense.class));
+                                                    }
+
+                                                }
+                                            }
                                         }
-                                    }
+                                    });
+                            binding.rvExpenses.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    expenseAdapter.setData(expenses);
                                 }
                             });
+                        }
+                    }).start();
+
                 }
                 else if(sortSel.equalsIgnoreCase("A to Z") && filtSel.equalsIgnoreCase("All"))
                 {
-                    db.collection("expenses").orderBy("title", Query.Direction.ASCENDING)
-                            .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                @Override
-                                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                    expenses.clear();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            db.collection("expenses").orderBy("title", Query.Direction.ASCENDING)
+                                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                                    if(error != null)
-                                    {
-                                        Log.e("Firestore error", error.getMessage());
-                                        return;
-                                    }
-                                    for(DocumentChange docCh : value.getDocumentChanges()){
-
-                                        if (docCh.getType() == DocumentChange.Type.ADDED)
-                                        {
-                                            DocumentSnapshot doc = docCh.getDocument();
-                                            if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
-                                                expenses.add(docCh.getDocument().toObject(Expense.class));
+                                            if(error != null)
+                                            {
+                                                Log.e("Firestore error", error.getMessage());
+                                                return;
                                             }
+                                            for(DocumentChange docCh : value.getDocumentChanges()){
 
+                                                if (docCh.getType() == DocumentChange.Type.ADDED)
+                                                {
+                                                    DocumentSnapshot doc = docCh.getDocument();
+                                                    if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
+                                                        expenses.add(docCh.getDocument().toObject(Expense.class));
+                                                    }
+
+                                                }
+                                            }
                                         }
-                                    }
+                                    });
+                            binding.rvExpenses.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    expenseAdapter.setData(expenses);
                                 }
                             });
+                        }
+                    }).start();
+
                 }
                 else if(sortSel.equalsIgnoreCase("A to Z") && !filtSel.equalsIgnoreCase("All"))
                 {
-                    db.collection("expenses").orderBy("title", Query.Direction.ASCENDING).whereEqualTo("category", filtSel)
-                            .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                @Override
-                                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                    expenses.clear();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            db.collection("expenses").orderBy("title", Query.Direction.ASCENDING).whereEqualTo("category", filtSel)
+                                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                                    if(error != null)
-                                    {
-                                        Log.e("Firestore error", error.getMessage());
-                                        return;
-                                    }
-                                    for(DocumentChange docCh : value.getDocumentChanges()){
-
-                                        if (docCh.getType() == DocumentChange.Type.ADDED)
-                                        {
-                                            DocumentSnapshot doc = docCh.getDocument();
-                                            if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
-                                                expenses.add(docCh.getDocument().toObject(Expense.class));
+                                            if(error != null)
+                                            {
+                                                Log.e("Firestore error", error.getMessage());
+                                                return;
                                             }
+                                            for(DocumentChange docCh : value.getDocumentChanges()){
 
+                                                if (docCh.getType() == DocumentChange.Type.ADDED)
+                                                {
+                                                    DocumentSnapshot doc = docCh.getDocument();
+                                                    if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
+                                                        expenses.add(docCh.getDocument().toObject(Expense.class));
+                                                    }
+
+                                                }
+                                            }
                                         }
-                                    }
+                                    });
+                            binding.rvExpenses.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    expenseAdapter.setData(expenses);
                                 }
                             });
+                        }
+                    }).start();
+
                 }
                 else if(sortSel.equalsIgnoreCase("Z to A") && filtSel.equalsIgnoreCase("All"))
                 {
-                    db.collection("expenses").orderBy("title", Query.Direction.DESCENDING)
-                            .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                @Override
-                                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                    expenses.clear();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            db.collection("expenses").orderBy("title", Query.Direction.DESCENDING)
+                                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                                    if(error != null)
-                                    {
-                                        Log.e("Firestore error", error.getMessage());
-                                        return;
-                                    }
-                                    for(DocumentChange docCh : value.getDocumentChanges()){
-
-                                        if (docCh.getType() == DocumentChange.Type.ADDED)
-                                        {
-                                            DocumentSnapshot doc = docCh.getDocument();
-                                            if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
-                                                expenses.add(docCh.getDocument().toObject(Expense.class));
+                                            if(error != null)
+                                            {
+                                                Log.e("Firestore error", error.getMessage());
+                                                return;
                                             }
+                                            for(DocumentChange docCh : value.getDocumentChanges()){
 
+                                                if (docCh.getType() == DocumentChange.Type.ADDED)
+                                                {
+                                                    DocumentSnapshot doc = docCh.getDocument();
+                                                    if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
+                                                        expenses.add(docCh.getDocument().toObject(Expense.class));
+                                                    }
+
+                                                }
+                                            }
                                         }
-                                    }
+                                    });
+                            binding.rvExpenses.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    expenseAdapter.setData(expenses);
                                 }
                             });
+                        }
+                    }).start();
+
                 }
                 else if(sortSel.equalsIgnoreCase("Z to A") && !filtSel.equalsIgnoreCase("All"))
                 {
-                    db.collection("expenses").orderBy("title", Query.Direction.DESCENDING).whereEqualTo("category", filtSel)
-                            .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                @Override
-                                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                    expenses.clear();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            db.collection("expenses").orderBy("title", Query.Direction.DESCENDING).whereEqualTo("category", filtSel)
+                                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                                    if(error != null)
-                                    {
-                                        Log.e("Firestore error", error.getMessage());
-                                        return;
-                                    }
-                                    for(DocumentChange docCh : value.getDocumentChanges()){
-
-                                        if (docCh.getType() == DocumentChange.Type.ADDED)
-                                        {
-                                            DocumentSnapshot doc = docCh.getDocument();
-                                            if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
-                                                expenses.add(docCh.getDocument().toObject(Expense.class));
+                                            if(error != null)
+                                            {
+                                                Log.e("Firestore error", error.getMessage());
+                                                return;
                                             }
+                                            for(DocumentChange docCh : value.getDocumentChanges()){
 
+                                                if (docCh.getType() == DocumentChange.Type.ADDED)
+                                                {
+                                                    DocumentSnapshot doc = docCh.getDocument();
+                                                    if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
+                                                        expenses.add(docCh.getDocument().toObject(Expense.class));
+                                                    }
+
+                                                }
+                                            }
                                         }
-                                    }
+                                    });
+                            binding.rvExpenses.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    expenseAdapter.setData(expenses);
                                 }
                             });
+                        }
+                    }).start();
                 }
             }
 
