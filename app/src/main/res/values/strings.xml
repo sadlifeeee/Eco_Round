@@ -27,5 +27,27 @@
         <item>Shopping</item>
     </string-array>
 
+    <string-array name="sort_options">
+        <item>Latest</item>
+        <item>Oldest</item>
+        <item>Most Expensive</item>
+        <item>Cheapest</item>
+        <item>A to Z</item>
+        <item>Z to A</item>
+    </string-array>
+
+    <string-array name="filter_options">
+        <item>All</item>
+        <item>Entertainment</item>
+        <item>Food</item>
+        <item>Gas</item>
+        <item>Gift</item>
+        <item>Home rent</item>
+        <item>Internet</item>
+        <item>Phone</item>
+        <item>Shopping</item>
+        <item>Transportation</item>
+        <item>Utilities</item>
+    </string-array>
 
 </resources>

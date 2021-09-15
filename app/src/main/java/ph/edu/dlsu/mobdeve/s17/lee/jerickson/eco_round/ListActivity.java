@@ -2,7 +2,6 @@ package ph.edu.dlsu.mobdeve.s17.lee.jerickson.eco_round;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -29,6 +28,8 @@ import java.util.Date;
 
 import ph.edu.dlsu.mobdeve.s17.lee.jerickson.eco_round.databinding.ActivityListBinding;
 
+import static ph.edu.dlsu.mobdeve.s17.lee.jerickson.eco_round.ExpenseAdapter.mTTS;
+
 
 public class ListActivity extends AppCompatActivity {
     private ArrayList<Expense> expenses;
@@ -36,7 +37,6 @@ public class ListActivity extends AppCompatActivity {
     private ExpenseAdapter expenseAdapter;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore db;
-    public static TextToSpeech mTTS;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,25 +46,11 @@ public class ListActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         expenses = new ArrayList<>();
         db = FirebaseFirestore.getInstance();
-
+        //expenses = DataHelper.loadExpenseData();
+        EventChangeListener();
         expenseAdapter = new ExpenseAdapter(getApplicationContext(), expenses);
         binding.rvExpenses.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         binding.rvExpenses.setAdapter(expenseAdapter);
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                EventChangeListener(); // Long Task
-
-                binding.rvExpenses.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        expenseAdapter.notifyItemInserted(0);
-                    }
-                });
-            }
-        }).start();
-
         addExp();
         navigate();
     }
@@ -108,7 +94,6 @@ public class ListActivity extends AppCompatActivity {
                         }
                     }
                 });
-
     }
 
     @Override
