@@ -11,6 +11,9 @@
     <string name="expenseCost">Expense Cost</string>
     <string name="expenseDate">Expense Date</string>
     <string name="expenseTitle">Expense Title</string>
+    <string name="send">Send</string>
+    <string name="category">Category</string>
+    <string name="back">Back</string>
     <string-array name="category_options">
         <item>Internet</item>
         <item>Food</item>

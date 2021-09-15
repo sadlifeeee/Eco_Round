@@ -134,6 +134,15 @@ public class MainActivity extends AppCompatActivity {
         loginOnClick();
         registerOnClick();
         QRLoginOnClick();
+        forgetPassOnClick();
+    }
+
+    private void forgetPassOnClick() {
+        binding.tvForgotPass.setOnClickListener(view -> {
+            Intent goToSecond = new Intent(MainActivity.this, forgetPassActivity.class);
+            startActivity(goToSecond);
+            finish();
+        });
     }
 
     private void QRLoginOnClick() {

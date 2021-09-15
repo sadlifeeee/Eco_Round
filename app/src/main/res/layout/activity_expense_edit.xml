@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -90,7 +91,7 @@
                 android:src="@drawable/expensedate"
                 android:layout_gravity="center"
                 android:layout_weight="2"
-                android:paddingRight="10dp"
+                android:paddingEnd="10dp"
                 />
 
             <com.google.android.material.textfield.TextInputEditText
@@ -98,7 +99,7 @@
                 android:layout_width="300dp"
                 android:layout_height="40dp"
                 android:background="@color/lightGrey"
-                android:hint="Category"
+                android:hint="@string/category"
                 android:textColorHint="@color/grey"
                 android:padding="5dp"
                 android:layout_weight="8"
@@ -144,8 +145,7 @@
                     android:text="@string/save"
                     android:textColor="@color/white"
                     android:background="@drawable/roundercorner_button"
-                    android:layout_gravity="center|left"
-                    />
+                    android:layout_gravity="center|start"/>
 
 
             </LinearLayout>
@@ -164,7 +164,7 @@
                     android:text="@string/cancel"
                     android:textColor="@color/white"
                     android:background="@drawable/roundercorner_button"
-                    android:layout_gravity="center|right"
+                    android:layout_gravity="center|end"
                     />
 
 
