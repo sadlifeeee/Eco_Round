@@ -9,37 +9,43 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:weightSum="10"
         android:id="@+id/ll_budgetsettings">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Budget"
-            android:textSize="25dp"
-            android:layout_marginBottom="5dp"
-            android:layout_margin="5dp"
-            android:layout_marginLeft="5dp"
-            android:shadowColor="@color/yellowbrown"
-            android:shadowRadius="2"
-            android:shadowDx="1"
-            android:shadowDy="1"
-            android:typeface="serif"
-            android:id="@+id/tv_budgetTitle"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/wallet"
+                android:layout_gravity="center"
+                android:layout_weight="2"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="160dp"
-            android:textSize="25dp"
-            android:text="Php 9500.00"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:shadowColor="@color/yellowbrown"
-            android:shadowRadius="2"
-            android:shadowDx="1"
-            android:shadowDy="1"
-            android:typeface="serif"
-            android:id="@+id/tv_budgetvalue"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:layout_gravity="left"
+                android:padding="4dp"
+                android:text="Budget"
+                android:textSize="25sp"
+                android:shadowColor="@color/yellowbrown"
+                android:shadowRadius="2"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:typeface="serif"
+                android:id="@+id/tv_budgetTitle"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="25sp"
+                android:text="P 9500.00"
+                android:padding="5dp"
+                android:gravity="right"
+                android:layout_weight="3"
+                android:typeface="serif"
+                android:id="@+id/tv_budgetvalue"/>
+
 
         </LinearLayout>
 
@@ -49,27 +55,41 @@
         android:background="@android:color/black"/>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/generateQRLayout">
+        android:orientation="vertical">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Generate Login QR Code"
-            android:textSize="25sp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="5dp"
-            android:shadowColor="@color/yellowbrown"
-            android:shadowRadius="2"
-            android:shadowDx="1"
-            android:shadowDy="1"
-            android:typeface="serif"
-            android:id="@+id/tv_GenerateQRLogin"
-            />
+            android:orientation="horizontal"
+            android:id="@+id/generateQRLayout"
+            android:clickable="true"
+            android:weightSum="10">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/qrblack"
+                android:layout_gravity="center"
+                android:layout_weight="2.35"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="7.65"
+                android:layout_gravity="left"
+                android:padding="5dp"
+                android:text="Generate QR Code "
+                android:textSize="25sp"
+                android:shadowColor="@color/yellowbrown"
+                android:shadowRadius="2"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:typeface="serif"
+                android:id="@+id/tv_generateQR"/>
+
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
@@ -78,28 +98,45 @@
 
     </LinearLayout>
 
-
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Logout"
-        android:textSize="25dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="5dp"
-        android:shadowColor="@color/yellowbrown"
-        android:shadowRadius="2"
-        android:shadowDx="1"
-        android:shadowDy="1"
-        android:typeface="serif"
-        android:id="@+id/tv_logoutbutton"
-        />
+        android:orientation="vertical">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/black"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/logout_layout"
+            android:clickable="true"
+            android:weightSum="10"
+            android:background="@color/red">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="10"
+                android:layout_gravity="left"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="Logout "
+                android:textSize="25sp"
+                android:shadowColor="@color/yellowbrown"
+                android:shadowRadius="2"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:typeface="serif"
+                android:id="@+id/tv_logout"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/black"/>
+
+    </LinearLayout>
+
 
 
     <LinearLayout

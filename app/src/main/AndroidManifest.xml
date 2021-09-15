@@ -20,7 +20,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Eco_Round"
         android:usesCleartextTraffic="true">
-        <activity android:name=".forgetPassActivity"></activity>
+        <activity
+            android:name=".graphActivity"
+            android:exported="true" />
+        <activity android:name=".forgetPassActivity" />
         <activity android:name=".generateQR" />
         <activity android:name=".WelcomeActivity">
             <intent-filter>

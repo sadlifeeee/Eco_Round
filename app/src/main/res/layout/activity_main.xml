@@ -59,7 +59,7 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_email"
-                    android:layout_width="300dp"
+                    android:layout_width="280dp"
                     android:layout_height="40dp"
                     android:background="@color/lightGrey"
                     android:hint="Email Address"
@@ -87,7 +87,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_password"
-                android:layout_width="300dp"
+                android:layout_width="280dp"
                 android:layout_height="40dp"
                 android:background="@color/lightGrey"
                 android:hint="Password"
@@ -122,7 +122,7 @@
 
         <Button
             android:id="@+id/btn_login"
-            android:layout_width="320dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:text="@string/login"
             android:textColor="@color/white"
@@ -140,7 +140,7 @@
 
             <Button
                 android:id="@+id/btn_googleLogin"
-                android:layout_width="320dp"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@drawable/roundercorner_button"
@@ -161,7 +161,7 @@
 
             <Button
                 android:id="@+id/btn_qrLogin"
-                android:layout_width="320dp"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@drawable/roundercorner_button"

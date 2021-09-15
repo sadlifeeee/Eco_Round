@@ -9,7 +9,7 @@
 
     <item
         android:id="@+id/nav_graph"
-        android:icon="@drawable/home"
+        android:icon="@drawable/graph"
         android:title="Graph"/>
 
     <item

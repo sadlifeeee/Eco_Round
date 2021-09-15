@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.common.graph.Graph;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
@@ -97,10 +98,9 @@ public class ListActivity extends AppCompatActivity {
            @Override
            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                sortSel = adapterView.getItemAtPosition(i).toString();
-
+               expenses.clear();
                if(sortSel.equalsIgnoreCase("Latest") && filtSel.equalsIgnoreCase("All"))
                {
-                   expenses.clear();
                    new Thread(new Runnable() {
                        @Override
                        public void run() {
@@ -175,6 +175,7 @@ public class ListActivity extends AppCompatActivity {
                            binding.rvExpenses.post(new Runnable() {
                                @Override
                                public void run() {
+                                   Log.e("PANSININ" , expenses + "");
                                    expenseAdapter.setData(expenses);
                                }
                            });
@@ -854,6 +855,11 @@ public class ListActivity extends AppCompatActivity {
                         return true;
                     case R.id.nav_settings:
                         startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+                        overridePendingTransition(0 , 0);
+                        finish();
+                        return true;
+                    case R.id.nav_graph:
+                        startActivity(new Intent(getApplicationContext(), graphActivity.class));
                         overridePendingTransition(0 , 0);
                         finish();
                         return true;

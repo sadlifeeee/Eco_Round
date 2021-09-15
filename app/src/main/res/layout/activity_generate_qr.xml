@@ -85,9 +85,9 @@
                     android:id="@+id/btn_cancel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/cancel"
+                    android:text="@string/back"
                     android:textColor="@color/white"
-                    android:background="@drawable/roundercorner_button"
+                    android:background="@drawable/red_roundercorner_button"
                     android:layout_gravity="center|right"
                     />
 

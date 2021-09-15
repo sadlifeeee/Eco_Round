@@ -76,21 +76,29 @@ public class SettingsActivity extends AppCompatActivity {
     private void navigate() {
         binding.bottomNav.setSelectedItemId(R.id.nav_settings);
 
-        binding.bottomNav.setOnNavigationItemSelectedListener(item -> {
-            switch(item.getItemId()){
-                case R.id.nav_home:
-                    startActivity(new Intent(getApplicationContext(),ListActivity.class));
-                    overridePendingTransition(0 , 0);
-                    finish();
-                    return true;
-                case R.id.nav_settings:
-                    return true;
+        binding.bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.nav_home:
+                        startActivity(new Intent(getApplicationContext(), ListActivity.class));
+                        overridePendingTransition(0, 0);
+                        finish();
+                        return true;
+                    case R.id.nav_settings:
+                        return true;
+                    case R.id.nav_graph:
+                        startActivity(new Intent(getApplicationContext(), graphActivity.class));
+                        overridePendingTransition(0, 0);
+                        finish();
+                        return true;
+                }
+                return false;
             }
-            return false;
         });
     }
     private void logoutOnClick() {
-        binding.tvLogoutbutton.setOnClickListener(v ->  {
+        binding.tvLogout.setOnClickListener(v ->  {
             FirebaseAuth.getInstance().signOut();
             Toast.makeText(getApplicationContext(), "Successfully Signed Out" , Toast.LENGTH_SHORT).show();
 
@@ -115,6 +123,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void generateQRonClick() {
+
         DocumentReference documentReference = db.collection("users").document(userID);
 
         documentReference.addSnapshotListener(this, (value, error) -> {
@@ -125,7 +134,7 @@ public class SettingsActivity extends AppCompatActivity {
             if(password == null) {
                 binding.generateQRLayout.setVisibility(View.GONE);
             } else {
-                binding.tvGenerateQRLogin.setOnClickListener(view -> {
+                binding.generateQRLayout.setOnClickListener(view -> {
                     Intent i = new Intent(SettingsActivity.this, generateQR.class);
                     startActivity(i);
                     finish();
