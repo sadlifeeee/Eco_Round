@@ -8,7 +8,8 @@ import java.io.Serializable;
 import java.util.Calendar;
 
 public class Expense implements Serializable {
-    private String title, category, userID, expenseID, receiptID;
+    private String title, category, userID, receiptID, expenseID;
+
     private Double price;
     private int categoryImg;
     private Timestamp dateCreated, expiresAt;

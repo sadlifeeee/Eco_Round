@@ -14,6 +14,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -96,7 +98,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
     @Override
     public void onBindViewHolder(@NonNull ExpenseAdapter.ExpenseViewHolder holder, int position) {
         holder.tv_expTitle.setText(expenseArrayList.get(position).getTitle());
-        //holder.iv_receipt.setImageResource(expenseArrayList.get(position).getReceiptID());
+        Picasso.with(context).load(expenseArrayList.get(position).getReceiptID()).fit().centerCrop().into(holder.iv_receipt);
         holder.tv_expPrice.setText(String.format("Php %.2f",expenseArrayList.get(position).getPrice()));
         String categ = expenseArrayList.get(holder.getAdapterPosition()).getCategory().trim();
         Log.i("Test", "I am hereeee");

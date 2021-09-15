@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
 
 import java.sql.Time;
 
@@ -54,10 +55,10 @@ public class ExpenseDetailsActivity extends AppCompatActivity {
         category.setText(i.getStringExtra(CATEGORY));
         title.setText(i.getStringExtra(TITLE));
         date.setText(i.getStringExtra(DATEDET));
-        //receiptImg.setImageResource(i.getStringExtra(RECEIPTIMG,0));
+        Picasso.with(this).load(i.getStringExtra(RECEIPTIMG)).fit().centerCrop().into(receiptImg);
         catImg.setImageResource(i.getIntExtra(CATEGORYPIC,0));
         price.setText(String.format("P %.2f", i.getDoubleExtra(PRICE,0)));
-        expId.setText((i.getStringExtra("expenseID")));
+        expId.setText((i.getStringExtra(RECEIPTIMG)));
         expId.setVisibility(View.INVISIBLE);
         pNoFormat.setText(String.format("%.2f", i.getDoubleExtra("priceNoFormat", 0)));
         pNoFormat.setVisibility(View.INVISIBLE);
