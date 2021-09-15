@@ -446,12 +446,14 @@ public class ListActivity extends AppCompatActivity {
                                             DocumentSnapshot doc = docCh.getDocument();
                                             if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
                                                 expenses.add(docCh.getDocument().toObject(Expense.class));
+                                                Log.i("CATEGORY CHECK", filtSel);
                                             }
 
                                         }
                                     }
                                 }
                             });
+                    expenseAdapter.setData(expenses);
                 }
                 else if(sortSel.equalsIgnoreCase("Latest") && !filtSel.equalsIgnoreCase("All"))
                 {
@@ -472,12 +474,14 @@ public class ListActivity extends AppCompatActivity {
                                             DocumentSnapshot doc = docCh.getDocument();
                                             if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
                                                 expenses.add(docCh.getDocument().toObject(Expense.class));
+                                                Log.i("CATEGORY CHECK", filtSel);
                                             }
 
                                         }
                                     }
                                 }
                             });
+                    expenseAdapter.setData(expenses);
                 }
                 else if(sortSel.equalsIgnoreCase("Oldest") && filtSel.equalsIgnoreCase("All"))
                 {
@@ -504,6 +508,7 @@ public class ListActivity extends AppCompatActivity {
                                     }
                                 }
                             });
+                    expenseAdapter.setData(expenses);
                 }
                 else if(sortSel.equalsIgnoreCase("Oldest") && !filtSel.equalsIgnoreCase("All"))
                 {
@@ -530,6 +535,7 @@ public class ListActivity extends AppCompatActivity {
                                     }
                                 }
                             });
+                    expenseAdapter.setData(expenses);
                 }
                 else if(sortSel.equalsIgnoreCase("Most Expensive") && filtSel.equalsIgnoreCase("All"))
                 {
