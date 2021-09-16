@@ -1,6 +1,7 @@
 package ph.edu.dlsu.mobdeve.s17.lee.jerickson.eco_round;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.media.metrics.Event;
 import android.os.Bundle;
 import android.os.Handler;
@@ -45,6 +46,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 
+import androidmads.library.qrgenearator.QRGContents;
+import androidmads.library.qrgenearator.QRGEncoder;
 import ph.edu.dlsu.mobdeve.s17.lee.jerickson.eco_round.databinding.ActivityListBinding;
 
 import static ph.edu.dlsu.mobdeve.s17.lee.jerickson.eco_round.ExpenseAdapter.mTTS;
@@ -91,26 +94,31 @@ public class ListActivity extends AppCompatActivity implements Serializable {
         binding.rvExpenses.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         binding.rvExpenses.setAdapter(expenseAdapter);
 
-        DocumentReference docRef = db.collection("users").document(mAuth.getCurrentUser().getUid());
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    DocumentSnapshot documentSnapshot = task.getResult();
-                    if(documentSnapshot.exists())
-                    {
-                        double budget = (double) documentSnapshot.get("userBudget");
-                        binding.tvBudgetNumber.setText(String.format("P %.2f", budget));
-                    }
-                }
-            }
-        });
         ExecutorService service = Executors.newFixedThreadPool(10);
             service.execute(task);
 
+        menuSetters();
         addExp();
         navigate();
         openFilterWindow();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    private void menuSetters() {
+        String userID = mAuth.getCurrentUser().getUid();
+        DocumentReference documentReference = db.collection("users").document(userID);
+
+        documentReference.addSnapshotListener(this, (value, error) -> {
+            String name = value.getString("name");
+            Double budget = value.getDouble("userBudget");
+
+            binding.tvBudgetNumber.setText(String.format("P %.2f", budget));
+            binding.tvUsername.setText("Hi! " + name);
+        });
     }
 
     private void openFilterWindow() {

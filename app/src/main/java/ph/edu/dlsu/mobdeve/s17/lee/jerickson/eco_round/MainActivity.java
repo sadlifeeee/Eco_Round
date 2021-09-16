@@ -308,7 +308,7 @@ public class MainActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser currentUser = mAuth.getCurrentUser();
-                        User user = new User(currentUser.getEmail());
+                        User user = new User(currentUser.getEmail() , currentUser.getDisplayName());
 
                         db.collection("users").document(mAuth.getCurrentUser().getUid()).set(user).addOnCompleteListener(task1 -> {
                             if (task1.isSuccessful()) {

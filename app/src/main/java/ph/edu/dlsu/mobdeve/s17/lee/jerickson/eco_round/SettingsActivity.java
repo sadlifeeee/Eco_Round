@@ -137,7 +137,6 @@ public class SettingsActivity extends AppCompatActivity {
         binding.llBudgetsettings.setOnClickListener(view -> {
             Intent i = new Intent(SettingsActivity.this, BudgetActivity.class);
             startActivity(i);
-            finish();
         });
     }
 
@@ -156,7 +155,6 @@ public class SettingsActivity extends AppCompatActivity {
                 binding.generateQRLayout.setOnClickListener(view -> {
                     Intent i = new Intent(SettingsActivity.this, generateQR.class);
                     startActivity(i);
-                    finish();
                 });
             }
         });

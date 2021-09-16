@@ -73,8 +73,12 @@ public class RegisterActivity extends AppCompatActivity {
         String email = binding.etEmail.getText().toString().trim();
         String password = binding.etPassword.getText().toString().trim();
         String confirmPass = binding.etConfirmPassword.getText().toString().trim();
-
-        if (!(password.equals(confirmPass))) {
+        String name = binding.etName.getText().toString();
+        if(name.isEmpty()) {
+            binding.etEmail.setError("Name is required");
+            binding.etEmail.requestFocus();
+        }
+        else if (!(password.equals(confirmPass))) {
             binding.etConfirmPassword.setError("Password does not match");
             binding.etConfirmPassword.requestFocus();
         } else if (email.isEmpty()) {
@@ -97,7 +101,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 String hashPass = encrypt(password, mainKey);
                                 String userID = mAuth.getCurrentUser().getUid();
 
-                                User user = new User(email , hashPass);
+                                User user = new User(email , hashPass, name);
 
                                 db.collection("users").document(userID).set(user).addOnCompleteListener(task1 -> {
                                     if (task1.isSuccessful()) {

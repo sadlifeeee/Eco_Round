@@ -50,7 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="P2000000"
+                    android:text=""
                     android:textSize="15sp"/>
 
             </LinearLayout>
@@ -110,7 +110,7 @@
                     android:id="@+id/tv_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Hello! Username"
+                    android:text=""
                     android:textSize="20sp"/>
 
             </LinearLayout>

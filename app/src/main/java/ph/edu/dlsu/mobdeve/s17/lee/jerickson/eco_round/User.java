@@ -5,16 +5,19 @@ public class User {
     public String email;
     public String hashPassword;
     public double userBudget;
+    public String name;
 
     public User() {
 
     }
 
-    public User(String email) {
+    public User(String email , String name) {
         this.email = email;
+        this.name = name;
     }
 
-    public User(String email , String hashPassword) {
+    public User(String email , String hashPassword , String name) {
+        this.name = name;
         this.email = email;
         this.hashPassword = hashPassword;
         this.userBudget = 0;

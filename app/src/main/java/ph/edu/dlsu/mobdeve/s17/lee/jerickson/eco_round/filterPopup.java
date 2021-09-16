@@ -84,7 +84,23 @@ public class filterPopup extends AppCompatActivity implements Serializable{
         filterSpinner.setSelection(0);
 
         sortFilter();
+        backOnClick();
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent goBack = new Intent(getApplicationContext() , ListActivity.class);
+        startActivity(goBack);
+        finish();
+    }
+
+    private void backOnClick() {
+        Intent goBack = new Intent(getApplicationContext() , ListActivity.class);
+        startActivity(goBack);
+        finish();
+    }
+
 
     private void sortFilter() {
         binding.btnSort.setOnClickListener(view -> {
