@@ -57,7 +57,7 @@ public class filterPopup extends AppCompatActivity implements Serializable{
 
         int width = dm.widthPixels , height = dm.heightPixels;
 
-        getWindow().setLayout((int) (width *.9) , (int) (height *.6));
+        getWindow().setLayout((int) (width *.9) , (int) (height *.4));
 
         WindowManager.LayoutParams params = getWindow().getAttributes();
         params.gravity = Gravity.CENTER;
@@ -84,23 +84,6 @@ public class filterPopup extends AppCompatActivity implements Serializable{
         filterSpinner.setSelection(0);
 
         sortFilter();
-        backOnClick();
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent goBack = new Intent(getApplicationContext() , ListActivity.class);
-        startActivity(goBack);
-        finish();
-    }
-
-    private void backOnClick() {
-        binding.btnCancel.setOnClickListener(view -> {
-            Intent goBack = new Intent(getApplicationContext() , ListActivity.class);
-            startActivity(goBack);
-            finish();
-        });
     }
 
 
@@ -109,76 +92,71 @@ public class filterPopup extends AppCompatActivity implements Serializable{
             String sort , filter;
             sort = sortSpinner.getItemAtPosition(sortSpinner.getSelectedItemPosition()).toString();
             filter = filterSpinner.getItemAtPosition(filterSpinner.getSelectedItemPosition()).toString();
-            Log.e("filter" , "" + filter);
+
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    ArrayList<Expense> expenseTemp = new ArrayList<>();
-
-                    expenseTemp = setFilterOption(sort , filter);
-
+                    setFilterOption(sort , filter);
                 }
             }).start();
         });
     }
 
-    public ArrayList<Expense> setFilterOption(String sort , String filter)
+    public void setFilterOption(String sort , String filter)
     {
-        ArrayList<Expense> expenseTemp = new ArrayList<>();
 
           if(sort.equalsIgnoreCase("Latest") && filter.equalsIgnoreCase("All"))
           {
-              expenseTemp = latestAll();
+             latestAll();
           }
           else if(sort.equalsIgnoreCase("Latest") && !(filter.equalsIgnoreCase("All")))
           {
-              expenseTemp = latestNotAll(filter);
+              latestNotAll(filter);
           }
           else if(sort.equalsIgnoreCase("Oldest") && filter.equalsIgnoreCase("All"))
           {
-              expenseTemp = oldestAll();
+              oldestAll();
           }
-          else if(sort.equalsIgnoreCase("Oldest") && !filter.equalsIgnoreCase("All"))
+          else if(sort.equalsIgnoreCase("Oldest") && !(filter.equalsIgnoreCase("All")))
           {
-              expenseTemp = oldestNotAll(filter);
+              oldestNotAll(filter);
           }
           else if(sort.equalsIgnoreCase("Most Expensive") && filter.equalsIgnoreCase("All"))
           {
-              expenseTemp = mostExpensiveAll();
+              mostExpensiveAll();
           }
-          else if(sort.equalsIgnoreCase("Most Expensive") && !filter.equalsIgnoreCase("All"))
+          else if(sort.equalsIgnoreCase("Most Expensive") && !(filter.equalsIgnoreCase("All")))
           {
-              expenseTemp = mostExpensiveNotAll(filter);
+              mostExpensiveNotAll(filter);
           }
           else if(sort.equalsIgnoreCase("Cheapest") && filter.equalsIgnoreCase("All"))
           {
-              expenseTemp = cheapestAll();
+              cheapestAll();
           }
-          else if(sort.equalsIgnoreCase("Cheapest") && !filter.equalsIgnoreCase("All"))
+          else if(sort.equalsIgnoreCase("Cheapest") && !(filter.equalsIgnoreCase("All")))
           {
-              expenseTemp = cheapestNotAll(filter);
+              cheapestNotAll(filter);
           }
           else if(sort.equalsIgnoreCase("A to Z") && filter.equalsIgnoreCase("All"))
           {
-              expenseTemp = aTOzAll();
+              aTOzAll();
           }
-          else if(sort.equalsIgnoreCase("A to Z") && !filter.equalsIgnoreCase("All"))
+          else if(sort.equalsIgnoreCase("A to Z") && !(filter.equalsIgnoreCase("All")))
           {
-              expenseTemp = aTOznotAll(filter);
+              aTOznotAll(filter);
           }
           else if(sort.equalsIgnoreCase("Z to A") && filter.equalsIgnoreCase("All"))
           {
-              expenseTemp = zToAAll();
+              zToAAll();
           }
-          else if(sort.equalsIgnoreCase("Z to A") && !filter.equalsIgnoreCase("All"))
+          else if(sort.equalsIgnoreCase("Z to A") && !(filter.equalsIgnoreCase("All")))
           {
-              expenseTemp = zTOaNotAll(filter);
+              zTOaNotAll(filter);
           }
 
-          return expenseTemp;
     }
 
-    private ArrayList<Expense> latestAll() {
+    private void latestAll() {
         ArrayList<Expense> expenseTemp = new ArrayList<>();
         new Thread(new Runnable() {
             @Override
@@ -210,6 +188,7 @@ public class filterPopup extends AppCompatActivity implements Serializable{
                                     public void run() {
                                         Intent goBack = new Intent(getApplicationContext() , ListActivity.class);
                                         expenses = expenseTemp;
+                                        goBack.putExtra("check" , true);
                                         startActivity(goBack);
                                         finish();
                                     }
@@ -219,11 +198,9 @@ public class filterPopup extends AppCompatActivity implements Serializable{
             }
         }).start();
 
-
-         return expenseTemp;
     }
 
-    private ArrayList<Expense> latestNotAll(String filter) {
+    private void latestNotAll(String filter) {
 
         ArrayList<Expense> expenseTemp = new ArrayList<>();
 
@@ -268,11 +245,10 @@ public class filterPopup extends AppCompatActivity implements Serializable{
             }
         }).start();
 
-
-        return expenseTemp;
     }
 
-    private ArrayList<Expense> oldestAll() {
+    private void oldestAll() {
+
         ArrayList<Expense> expenseTemp = new ArrayList<>();
         new Thread(new Runnable() {
             @Override
@@ -315,10 +291,9 @@ public class filterPopup extends AppCompatActivity implements Serializable{
         }).start();
 
 
-        return expenseTemp;
     }
 
-    private ArrayList<Expense> oldestNotAll(String filter) {
+    private void oldestNotAll(String filter) {
 
         ArrayList<Expense> expenseTemp = new ArrayList<>();
         new Thread(new Runnable() {
@@ -340,7 +315,7 @@ public class filterPopup extends AppCompatActivity implements Serializable{
                                     {
                                         DocumentSnapshot doc = docCh.getDocument();
                                         if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
-                                            expenses.add(docCh.getDocument().toObject(Expense.class));
+                                            expenseTemp.add(docCh.getDocument().toObject(Expense.class));
                                         }
 
                                     }
@@ -363,10 +338,9 @@ public class filterPopup extends AppCompatActivity implements Serializable{
             }
         }).start();
 
-        return expenseTemp;
     }
 
-    private ArrayList<Expense> mostExpensiveAll() {
+    private void mostExpensiveAll() {
         ArrayList<Expense> expenseTemp = new ArrayList<>();
         new Thread(new Runnable() {
             @Override
@@ -381,17 +355,16 @@ public class filterPopup extends AppCompatActivity implements Serializable{
                                     Log.e("Firestore error", error.getMessage());
                                     return;
                                 }
-                                for(DocumentChange docCh : value.getDocumentChanges()){
+                                for(DocumentChange docCh : value.getDocumentChanges()) {
 
-                                    if (docCh.getType() == DocumentChange.Type.ADDED)
-                                    {
+                                    if (docCh.getType() == DocumentChange.Type.ADDED) {
                                         DocumentSnapshot doc = docCh.getDocument();
-                                        if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
+                                        if (doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())) {
                                             expenseTemp.add(docCh.getDocument().toObject(Expense.class));
                                         }
 
                                     }
-
+                                }
                                     mHandler.post(new Runnable() {
                                         @Override
                                         public void run() {
@@ -402,16 +375,15 @@ public class filterPopup extends AppCompatActivity implements Serializable{
                                             finish();
                                         }
                                     });
-                                }
+
                             }
                         });
             }
         }).start();
 
-        return expenseTemp;
     }
 
-    private ArrayList<Expense> mostExpensiveNotAll(String filter) {
+    private void mostExpensiveNotAll(String filter) {
         ArrayList<Expense> expenseTemp = new ArrayList<>();
         new Thread(new Runnable() {
             @Override
@@ -432,7 +404,7 @@ public class filterPopup extends AppCompatActivity implements Serializable{
                                     {
                                         DocumentSnapshot doc = docCh.getDocument();
                                         if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
-                                            expenses.add(docCh.getDocument().toObject(Expense.class));
+                                            expenseTemp.add(docCh.getDocument().toObject(Expense.class));
                                         }
 
                                     }
@@ -453,11 +425,9 @@ public class filterPopup extends AppCompatActivity implements Serializable{
             }
         }).start();
 
-
-        return expenseTemp;
     }
 
-    private ArrayList<Expense> cheapestAll() {
+    private void cheapestAll() {
         ArrayList<Expense> expenseTemp = new ArrayList<>();
         new Thread(new Runnable() {
             @Override
@@ -500,10 +470,9 @@ public class filterPopup extends AppCompatActivity implements Serializable{
             }
         }).start();
 
-        return expenseTemp;
     }
 
-    private ArrayList<Expense> cheapestNotAll(String filter) {
+    private void cheapestNotAll(String filter) {
         ArrayList<Expense> expenseTemp = new ArrayList<>();
         new Thread(new Runnable() {
             @Override
@@ -545,11 +514,10 @@ public class filterPopup extends AppCompatActivity implements Serializable{
             }
         }).start();
 
-
-        return expenseTemp;
     }
 
-    private ArrayList<Expense> aTOzAll() {
+    private void aTOzAll() {
+
         ArrayList<Expense> expenseTemp = new ArrayList<>();
         new Thread(new Runnable() {
             @Override
@@ -591,11 +559,9 @@ public class filterPopup extends AppCompatActivity implements Serializable{
             }
         }).start();
 
-
-        return expenseTemp;
     }
 
-    private ArrayList<Expense> aTOznotAll(String filter) {
+    private void aTOznotAll(String filter) {
         ArrayList<Expense> expenseTemp = new ArrayList<>();
         new Thread(new Runnable() {
             @Override
@@ -637,11 +603,9 @@ public class filterPopup extends AppCompatActivity implements Serializable{
             }
         }).start();
 
-
-        return expenseTemp;
     }
 
-    private ArrayList<Expense> zToAAll() {
+    private void zToAAll() {
         ArrayList<Expense> expenseTemp = new ArrayList<>();
         new Thread(new Runnable() {
             @Override
@@ -683,11 +647,9 @@ public class filterPopup extends AppCompatActivity implements Serializable{
             }
         }).start();
 
-
-        return expenseTemp;
     }
 
-    private ArrayList<Expense> zTOaNotAll(String filter) {
+    private void zTOaNotAll(String filter) {
         ArrayList<Expense> expenseTemp = new ArrayList<>();
         new Thread(new Runnable() {
             @Override
@@ -729,6 +691,5 @@ public class filterPopup extends AppCompatActivity implements Serializable{
             }
         }).start();
 
-        return expenseTemp;
     }
 }

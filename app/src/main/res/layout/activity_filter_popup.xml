@@ -104,7 +104,7 @@
 
             <Button
                 android:id="@+id/btn_sort"
-                android:layout_width="150dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="Sort"
                 android:textColor="@color/white"
@@ -121,20 +121,7 @@
             android:orientation="horizontal"
             android:layout_weight="5"
             android:gravity="left"
-            android:padding="10dp">
-
-            <Button
-                android:id="@+id/btn_cancel"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:text="@string/back"
-                android:textColor="@color/white"
-                android:background="@drawable/red_roundercorner_button"
-                android:layout_gravity="center|right"
-                />
-
-
-        </LinearLayout>
+            android:padding="10dp"/>
 
     </LinearLayout>
 

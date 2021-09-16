@@ -73,7 +73,6 @@ public class ExpenseAdd extends AppCompatActivity implements AdapterView.OnItemS
             i.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(i, PICK_IMAGE_REQUEST);
         });
-
     }
 
     @Override
