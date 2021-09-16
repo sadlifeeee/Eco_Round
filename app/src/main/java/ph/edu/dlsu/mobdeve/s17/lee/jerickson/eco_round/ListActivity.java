@@ -341,7 +341,6 @@ public class ListActivity extends AppCompatActivity implements Serializable {
     private void checkForWarnings(double tempT, double tempB)
     {
         double res = tempT/tempB;
-        Log.i("TOTAL/BUDGET", " " + res +" - - - " );
         if(res > 1)
         {
             notifBuilderExceed();
