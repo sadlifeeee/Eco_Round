@@ -69,24 +69,38 @@ public class ExpenseEdit extends AppCompatActivity {
             Double updPrice = Double.parseDouble(newPrice);
             newCategory = category.getText().toString().trim();
             //newRec = expense.getReceiptID();
-            /*
-            * Insert input validation here
-            *
-            * */
+            if(newTitle.isEmpty())
+            {
+                title.setError("Title is required");
+                title.requestFocus();
+            }
+            else if(newPrice.isEmpty())
+            {
+                price.setError("Price is required");
+                price.requestFocus();
+            }
+            else if(newCategory.isEmpty())
+            {
+                category.setError("Category is required");
+                category.requestFocus();
+            }
+            else{
+                Expense updatedExpense = new Expense(newCategory, expense.getExpenseID(), updPrice, expense.getReceiptID(), newTitle, mAuth.getCurrentUser().getUid());
+                Log.i("EXPENSE ID", expense.getExpenseID());
+                db.collection("expenses").document(expense.getExpenseID()).update("category", newCategory, "price", updPrice,
+                        "title", newTitle).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(ExpenseEdit.this, "Expense Updated", Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(ExpenseEdit.this, ListActivity.class);
+                        startActivity(i);
+                        finish();
+                    }
+                });
+            }
 
 
-            Expense updatedExpense = new Expense(newCategory, expense.getExpenseID(), updPrice, expense.getReceiptID(), newTitle, mAuth.getCurrentUser().getUid());
-            Log.i("EXPENSE ID", expense.getExpenseID());
-            db.collection("expenses").document(expense.getExpenseID()).update("category", newCategory, "price", updPrice,
-                    "title", newTitle).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void unused) {
-                    Toast.makeText(ExpenseEdit.this, "Expense Updated", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(ExpenseEdit.this, ListActivity.class);
-                    startActivity(i);
-                    finish();
-                }
-            });
+
         });
     }
 }
