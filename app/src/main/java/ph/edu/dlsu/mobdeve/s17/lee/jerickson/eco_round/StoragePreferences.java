@@ -23,8 +23,18 @@ public class StoragePreferences {
         prefsEditor.apply();
     }
 
+    public void saveIntPreferences(String key, int value){
+        SharedPreferences.Editor prefsEditor = appPreferences.edit();
+        prefsEditor.putInt(key , value);
+        prefsEditor.apply();
+    }
+
     public boolean getBooleanPreferences(String key){
         return(appPreferences.getBoolean(key, false));
+    }
+
+    public int getIntPreferences(String key){
+        return(appPreferences.getInt(key, 0));
     }
 
     public String getStringPreferences(String key){

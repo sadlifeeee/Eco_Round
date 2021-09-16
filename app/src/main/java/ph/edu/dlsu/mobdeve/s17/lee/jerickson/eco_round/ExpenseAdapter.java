@@ -94,9 +94,14 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
         return expenseViewHolder;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
 
     @Override
     public void onBindViewHolder(@NonNull ExpenseAdapter.ExpenseViewHolder holder, int position) {
+
         holder.tv_expTitle.setText(expenseArrayList.get(position).getTitle());
         Picasso.with(context).load(expenseArrayList.get(position).getReceiptID()).fit().centerCrop().into(holder.iv_receipt);
         holder.tv_expPrice.setText(String.format("Php %.2f",expenseArrayList.get(position).getPrice()));
@@ -167,7 +172,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseV
     public void setData(ArrayList<Expense> data)
     {
         this.expenseArrayList.clear();
-        this.expenseArrayList.addAll(data);
+        this.expenseArrayList = data;
         notifyDataSetChanged();
     }
 

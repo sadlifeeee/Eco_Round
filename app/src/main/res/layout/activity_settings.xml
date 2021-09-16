@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -88,6 +89,43 @@
                 android:shadowDy="1"
                 android:typeface="serif"
                 android:id="@+id/tv_generateQR"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/black"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/feedback_layout"
+            android:clickable="true"
+            android:weightSum="10">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/feedback"
+                android:layout_gravity="center"
+                android:layout_weight="1.55"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="8.45"
+                android:layout_gravity="left"
+                android:padding="5dp"
+                android:text="Feedback "
+                android:textSize="25sp"
+                android:shadowColor="@color/yellowbrown"
+                android:shadowRadius="2"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:typeface="serif"
+                android:id="@+id/tv_feedback"/>
 
         </LinearLayout>
 

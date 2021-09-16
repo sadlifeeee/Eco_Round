@@ -201,9 +201,17 @@ public class ListActivity extends AppCompatActivity implements Serializable {
                 @Override
                 public void run() {
 
+                    expenses.clear();
+                    expenseAdapter.setData(expenses);
+                    expenseAdapter.notifyDataSetChanged();
+
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
+                            expenses.clear();
+                            expenseAdapter.setData(expenses);
+                            expenseAdapter.notifyDataSetChanged();
+                            Log.e("PANSININ MO AKO" , filterPopup.expenses + "" );
                             expenseAdapter.setData(filterPopup.expenses);
                             expenseAdapter.notifyDataSetChanged();
                         }

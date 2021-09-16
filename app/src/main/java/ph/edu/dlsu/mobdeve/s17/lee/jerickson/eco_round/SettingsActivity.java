@@ -84,9 +84,17 @@ public class SettingsActivity extends AppCompatActivity {
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
+        feedbackOnClick();
         logoutOnClick();
         budgetOnClick();
         generateQRonClick();
+    }
+
+    private void feedbackOnClick() {
+        binding.feedbackLayout.setOnClickListener(view -> {
+            Intent i = new Intent(SettingsActivity.this, Feedback.class);
+            startActivity(i);
+        });
     }
 
     private void navigate() {

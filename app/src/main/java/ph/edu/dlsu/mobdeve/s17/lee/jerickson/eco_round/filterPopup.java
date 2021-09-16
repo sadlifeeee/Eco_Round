@@ -41,8 +41,12 @@ public class filterPopup extends AppCompatActivity implements Serializable{
 
     private Spinner sortSpinner, filterSpinner;
 
+    public int saveSort = 0, saveFilter = 0;
+    public String saveSortTemp = "", saveFilterTemp = "";
+
     private ActivityFilterPopupBinding binding;
 
+    private StoragePreferences storagePreferences;
     private Handler mHandler = new Handler();
 
     @Override
@@ -51,6 +55,20 @@ public class filterPopup extends AppCompatActivity implements Serializable{
         setContentView(R.layout.activity_filter_popup);
         binding = ActivityFilterPopupBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+
+        storagePreferences = new StoragePreferences(this);
+
+        saveSortTemp = storagePreferences.getStringPreferences("SORT");
+
+        saveFilterTemp = storagePreferences.getStringPreferences("FILTER");
+
+        if(saveSortTemp.isEmpty())
+            saveSortTemp = "0";
+
+        if(saveFilterTemp.isEmpty())
+            saveFilterTemp = "0";
+
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -73,7 +91,8 @@ public class filterPopup extends AppCompatActivity implements Serializable{
                 android.R.layout.simple_spinner_item);
         sortOpts.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sortSpinner.setAdapter(sortOpts);
-        sortSpinner.setSelection(0);
+        saveSort = Integer.parseInt(saveSortTemp);
+        sortSpinner.setSelection(saveSort);
 
         //Filter Spinner
         filterSpinner = binding.spinFilterBy;
@@ -81,11 +100,25 @@ public class filterPopup extends AppCompatActivity implements Serializable{
                 android.R.layout.simple_spinner_item);
         filtOpts.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         filterSpinner.setAdapter(filtOpts);
-        filterSpinner.setSelection(0);
+        saveFilter = Integer.parseInt(saveFilterTemp);
+        filterSpinner.setSelection(saveFilter);
 
         sortFilter();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        saveSort = sortSpinner.getSelectedItemPosition();
+        saveFilter = filterSpinner.getSelectedItemPosition();
+        saveSortTemp = saveSort + "";
+        saveFilterTemp = saveFilter + "";
+
+
+        storagePreferences.saveStringPreferences("SORT", saveSortTemp);
+        storagePreferences.saveStringPreferences("FILTER", saveFilterTemp);
+    }
 
     private void sortFilter() {
         binding.btnSort.setOnClickListener(view -> {
