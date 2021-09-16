@@ -73,6 +73,7 @@
                 android:background="@color/lightGrey"
                 android:hint="@string/expenseCost"
                 android:textColorHint="@color/grey"
+                android:inputType="numberDecimal"
                 android:padding="5dp"
                 android:layout_weight="8"
                 />
@@ -103,7 +104,7 @@
                 android:textColorHint="@color/grey"
                 android:padding="5dp"
                 android:layout_weight="8"
-                android:inputType="date"
+                android:inputType="text"
                 />
 
         </LinearLayout>

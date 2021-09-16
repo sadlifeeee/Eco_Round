@@ -62,6 +62,12 @@ public class ExpenseEdit extends AppCompatActivity {
     }
 
     private void updateOnClick(){
+        binding.btnCancel.setOnClickListener(view -> {
+            Intent i = new Intent(ExpenseEdit.this, ListActivity.class);
+            startActivity(i);
+            finish();
+        });
+
         binding.btnUpdate.setOnClickListener(view -> {
             String newTitle, newPrice, newCategory, newRec;
             newTitle = title.getText().toString().trim();
