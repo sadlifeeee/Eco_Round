@@ -21,6 +21,9 @@
         android:theme="@style/Theme.Eco_Round"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".filterPopup"
+            android:theme="@style/ThemeOverlay.AppCompat.popMe"/>
+        <activity
             android:name=".graphActivity"
             android:exported="true" />
         <activity android:name=".forgetPassActivity" />

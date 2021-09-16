@@ -3,15 +3,19 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Son2/Desktop/Android Project/Eco_Round/app/src/main/res/drawable/popup_bg.xml" value="0.15462962962962962" />
         <entry key="..\:/Users/Son2/Desktop/Android Project/Eco_Round/app/src/main/res/drawable/red_roundercorner_button.xml" value="0.14635416666666667" />
+        <entry key="..\:/Users/Son2/Desktop/Android Project/Eco_Round/app/src/main/res/drawable/roundercorner_button.xml" value="0.15462962962962962" />
+        <entry key="..\:/Users/Son2/Desktop/Android Project/Eco_Round/app/src/main/res/drawable/shadow_button_layer_list.xml" value="0.15462962962962962" />
         <entry key="..\:/Users/Son2/Desktop/Android Project/Eco_Round/app/src/main/res/layout/activity_budget.xml" value="0.134375" />
         <entry key="..\:/Users/Son2/Desktop/Android Project/Eco_Round/app/src/main/res/layout/activity_expense_add.xml" value="0.134375" />
         <entry key="..\:/Users/Son2/Desktop/Android Project/Eco_Round/app/src/main/res/layout/activity_expense_details.xml" value="0.134375" />
         <entry key="..\:/Users/Son2/Desktop/Android Project/Eco_Round/app/src/main/res/layout/activity_expense_edit.xml" value="0.16614583333333333" />
+        <entry key="..\:/Users/Son2/Desktop/Android Project/Eco_Round/app/src/main/res/layout/activity_filter_popup.xml" value="0.2" />
         <entry key="..\:/Users/Son2/Desktop/Android Project/Eco_Round/app/src/main/res/layout/activity_forget_pass.xml" value="0.134375" />
         <entry key="..\:/Users/Son2/Desktop/Android Project/Eco_Round/app/src/main/res/layout/activity_generate_qr.xml" value="0.17980072463768115" />
         <entry key="..\:/Users/Son2/Desktop/Android Project/Eco_Round/app/src/main/res/layout/activity_graph.xml" value="0.134375" />
-        <entry key="..\:/Users/Son2/Desktop/Android Project/Eco_Round/app/src/main/res/layout/activity_list.xml" value="0.176" />
+        <entry key="..\:/Users/Son2/Desktop/Android Project/Eco_Round/app/src/main/res/layout/activity_list.xml" value="0.264" />
         <entry key="..\:/Users/Son2/Desktop/Android Project/Eco_Round/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Users/Son2/Desktop/Android Project/Eco_Round/app/src/main/res/layout/activity_register.xml" value="0.134375" />
         <entry key="..\:/Users/Son2/Desktop/Android Project/Eco_Round/app/src/main/res/layout/activity_settings.xml" value="0.264" />
