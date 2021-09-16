@@ -90,6 +90,13 @@ public class ExpenseEdit extends AppCompatActivity {
                 category.setError("Category is required");
                 category.requestFocus();
             }
+            else if(!newCategory.equals("Home rent") && !newCategory.equals("Utilities") && !newCategory.equals("Food") && !newCategory.equals("Entertainment")
+            && !newCategory.equals("Gift") && !newCategory.equals("Internet") && !newCategory.equals("Transportation") && !newCategory.equals("Gas") &&
+            !newCategory.equals("Phone") && !newCategory.equals("Shopping"))
+            {
+                category.setError("Invalid Category");
+                category.requestFocus();
+            }
             else{
                 Expense updatedExpense = new Expense(newCategory, expense.getExpenseID(), updPrice, expense.getReceiptID(), newTitle, mAuth.getCurrentUser().getUid());
                 Log.i("EXPENSE ID", expense.getExpenseID());
