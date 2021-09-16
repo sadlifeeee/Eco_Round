@@ -47,20 +47,16 @@ public class SettingsActivity extends AppCompatActivity {
 
         navigate();
         init();
+    }
 
-        DocumentReference docRef = db.collection("users").document(mAuth.getCurrentUser().getUid());
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    DocumentSnapshot documentSnapshot = task.getResult();
-                    if(documentSnapshot.exists())
-                    {
-                        double budget = (double) documentSnapshot.get("userBudget");
-                        binding.tvBudgetvalue.setText(String.format("P %.2f", budget));
-                    }
-                }
-            }
+    private void menuSetters() {
+        DocumentReference documentReference = db.collection("users").document(userID);
+
+        documentReference.addSnapshotListener(this, (value, error) -> {
+            String name = value.getString("name");
+            Double budget = value.getDouble("userBudget");
+
+            binding.tvBudgetvalue.setText(String.format("P %.2f", budget));
         });
     }
 
@@ -72,12 +68,13 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        navigate();
         super.onStart();
+        navigate();
     }
 
     private void init(){
 
+        menuSetters();
         db = FirebaseFirestore.getInstance();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -116,6 +113,8 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
     }
+
+
     private void logoutOnClick() {
         binding.tvLogout.setOnClickListener(v ->  {
             FirebaseAuth.getInstance().signOut();

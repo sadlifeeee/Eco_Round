@@ -96,9 +96,11 @@ public class filterPopup extends AppCompatActivity implements Serializable{
     }
 
     private void backOnClick() {
-        Intent goBack = new Intent(getApplicationContext() , ListActivity.class);
-        startActivity(goBack);
-        finish();
+        binding.btnCancel.setOnClickListener(view -> {
+            Intent goBack = new Intent(getApplicationContext() , ListActivity.class);
+            startActivity(goBack);
+            finish();
+        });
     }
 
 

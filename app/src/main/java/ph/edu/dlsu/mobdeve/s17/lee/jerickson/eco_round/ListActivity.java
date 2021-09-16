@@ -30,8 +30,10 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firestore.v1.Document;
+import com.google.firestore.v1.Value;
 
 import java.io.Serializable;
 import java.sql.Array;
@@ -97,6 +99,7 @@ public class ListActivity extends AppCompatActivity implements Serializable {
         ExecutorService service = Executors.newFixedThreadPool(10);
             service.execute(task);
 
+
         menuSetters();
         addExp();
         navigate();
@@ -118,6 +121,19 @@ public class ListActivity extends AppCompatActivity implements Serializable {
 
             binding.tvBudgetNumber.setText(String.format("P %.2f", budget));
             binding.tvUsername.setText("Hi! " + name);
+        });
+
+        db.collection("expenses").get().addOnCompleteListener(task -> {
+            double total = 0;
+            if(task.isSuccessful()) {
+                for(QueryDocumentSnapshot document : task.getResult()) {
+                    if(document.getString("userID").equals(userID))
+                        total += document.getDouble("price");
+                }
+                binding.tvTotalSpent.setText(String.format("P %.2f", total));
+            } else {
+                Log.e("FB ERROR" , "Error Getting Document");
+            }
         });
     }
 
