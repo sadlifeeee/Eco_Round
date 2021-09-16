@@ -4,6 +4,7 @@ public class User {
 
     public String email;
     public String hashPassword;
+    public double userBudget;
 
     public User() {
 
@@ -16,5 +17,15 @@ public class User {
     public User(String email , String hashPassword) {
         this.email = email;
         this.hashPassword = hashPassword;
+        this.userBudget = 0;
+    }
+
+    public double getUserBudget()
+    {
+        return userBudget;
+    }
+
+    public void setUserBudget(double userBudget) {
+        this.userBudget = userBudget;
     }
 }
