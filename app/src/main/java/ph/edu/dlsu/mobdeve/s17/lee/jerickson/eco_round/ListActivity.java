@@ -1,8 +1,13 @@
 package ph.edu.dlsu.mobdeve.s17.lee.jerickson.eco_round;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.metrics.Event;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -15,6 +20,8 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -61,7 +68,11 @@ public class ListActivity extends AppCompatActivity implements Serializable {
     private ExpenseAdapter expenseAdapter;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore db;
-
+    private static final String CHANNEL_ID = "CHANNEL1";
+    private String notifTitle1 = "WARNING!", notifTitle2 = "CRITICAL WARNING!";
+    private String notifMess1 = "You are now ALMOST at your spending limit",
+    notifMess2 = "You have now EXCEEDED your spending limit";
+    private double tempBud, tempTot;
     private boolean check = false;
 
     private Handler mHandler = new Handler();
@@ -91,7 +102,7 @@ public class ListActivity extends AppCompatActivity implements Serializable {
         setContentView(binding.getRoot());
         expenses = new ArrayList<>();
         db = FirebaseFirestore.getInstance();
-
+        notifChannelOreoAbove();
         expenseAdapter = new ExpenseAdapter(getApplicationContext(), expenses);
         binding.rvExpenses.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         binding.rvExpenses.setAdapter(expenseAdapter);
@@ -99,11 +110,11 @@ public class ListActivity extends AppCompatActivity implements Serializable {
         ExecutorService service = Executors.newFixedThreadPool(10);
             service.execute(task);
 
-
         menuSetters();
         addExp();
         navigate();
         openFilterWindow();
+
     }
 
     @Override
@@ -111,30 +122,39 @@ public class ListActivity extends AppCompatActivity implements Serializable {
         super.onBackPressed();
     }
 
+    private void setBudget(double tempB)
+    {
+        this.tempBud = tempB;
+    }
     private void menuSetters() {
         String userID = mAuth.getCurrentUser().getUid();
         DocumentReference documentReference = db.collection("users").document(userID);
 
         documentReference.addSnapshotListener(this, (value, error) -> {
             String name = value.getString("name");
-            Double budget = value.getDouble("userBudget");
+            double budget = value.getDouble("userBudget");
 
             binding.tvBudgetNumber.setText(String.format("P %.2f", budget));
             binding.tvUsername.setText("Hi! " + name);
+
+            db.collection("expenses").get().addOnCompleteListener(task -> {
+                double total = 0;
+                if(task.isSuccessful()) {
+                    for(QueryDocumentSnapshot document : task.getResult()) {
+                        if(document.getString("userID").equals(userID))
+                            total += document.getDouble("price");
+                    }
+                    binding.tvTotalSpent.setText(String.format("P %.2f", total));
+                    tempTot = total;
+                    checkForWarnings(total,budget);
+                } else {
+                    Log.e("FB ERROR" , "Error Getting Document");
+                }
+            });
         });
 
-        db.collection("expenses").get().addOnCompleteListener(task -> {
-            double total = 0;
-            if(task.isSuccessful()) {
-                for(QueryDocumentSnapshot document : task.getResult()) {
-                    if(document.getString("userID").equals(userID))
-                        total += document.getDouble("price");
-                }
-                binding.tvTotalSpent.setText(String.format("P %.2f", total));
-            } else {
-                Log.e("FB ERROR" , "Error Getting Document");
-            }
-        });
+
+
     }
 
     private void openFilterWindow() {
@@ -272,6 +292,66 @@ public class ListActivity extends AppCompatActivity implements Serializable {
         });
     }
 
+    private void notifBuilderAlmost(){
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_baseline_monetization)
+                .setContentTitle(notifTitle1)
+                .setContentText(notifMess1)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setAutoCancel(true);
+
+        Intent intent = new Intent(ListActivity.this, ListActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(ListActivity.this, 0, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(pendingIntent);
+
+        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
+        managerCompat.notify(1, builder.build());
+    }
+
+    private void notifBuilderExceed(){
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_baseline_monetization)
+                .setContentTitle(notifTitle2)
+                .setContentText(notifMess2)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setAutoCancel(true);
+
+        Intent intent = new Intent(ListActivity.this, ListActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(ListActivity.this, 0, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(pendingIntent);
+
+        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
+        managerCompat.notify(2, builder.build());
+    }
+
+    private void notifChannelOreoAbove()
+    {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "Notification", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+    }
+
+    private void checkForWarnings(double tempT, double tempB)
+    {
+        double res = tempT/tempB;
+        Log.i("TOTAL/BUDGET", " " + res +" - - - " );
+        if(res > 1)
+        {
+            notifBuilderExceed();
+        }
+        else if(res >= 0.9)
+        {
+            notifBuilderAlmost();
+        }
+
+    }
 }
 
 
