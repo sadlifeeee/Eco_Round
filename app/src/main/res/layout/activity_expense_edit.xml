@@ -115,15 +115,6 @@
             android:src="@drawable/receiptimg"
             android:layout_gravity="center" />
 
-        <Button
-            android:id="@+id/btn_upload"
-            android:layout_width="320dp"
-            android:layout_height="wrap_content"
-            android:text="@string/uploadPhoto"
-            android:textColor="@color/white"
-            android:background="@drawable/roundercorner_button"
-            android:layout_gravity="center"
-            />
 
         <LinearLayout
             android:layout_width="match_parent"
