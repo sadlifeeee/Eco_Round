@@ -47,6 +47,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         navigate();
         init();
+        menuSetters();
     }
 
     private void menuSetters() {
@@ -74,7 +75,6 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void init(){
 
-        menuSetters();
         db = FirebaseFirestore.getInstance();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
