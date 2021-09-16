@@ -28,12 +28,17 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firestore.v1.Document;
 
+import java.io.Serializable;
 import java.sql.Array;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 
 import ph.edu.dlsu.mobdeve.s17.lee.jerickson.eco_round.databinding.ActivityListBinding;
@@ -41,14 +46,33 @@ import ph.edu.dlsu.mobdeve.s17.lee.jerickson.eco_round.databinding.ActivityListB
 import static ph.edu.dlsu.mobdeve.s17.lee.jerickson.eco_round.ExpenseAdapter.mTTS;
 
 
-public class ListActivity extends AppCompatActivity {
+public class ListActivity extends AppCompatActivity implements Serializable {
     private ArrayList<Expense> expenses;
     private ActivityListBinding binding;
     private ExpenseAdapter expenseAdapter;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore db;
 
+    private boolean check = false;
+
     private Handler mHandler = new Handler();
+
+    private Runnable task = new Runnable() {
+        @Override
+        public void run() {
+            EventChangeListener();
+
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    expenseAdapter.setData(expenses);
+                    expenseAdapter.notifyDataSetChanged();
+                }
+            });
+
+            expenseAdapter.notifyDataSetChanged();
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,23 +83,12 @@ public class ListActivity extends AppCompatActivity {
         expenses = new ArrayList<>();
         db = FirebaseFirestore.getInstance();
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                expenses = EventChangeListener();
+        expenseAdapter = new ExpenseAdapter(getApplicationContext(), expenses);
+        binding.rvExpenses.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        binding.rvExpenses.setAdapter(expenseAdapter);
 
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.e("PANSININ" , "" + expenses.size());
-                        binding.rvExpenses.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                        expenseAdapter = new ExpenseAdapter(getApplicationContext(), expenses);
-                        binding.rvExpenses.setAdapter(expenseAdapter);
-                        expenseAdapter.setData(expenses);
-                    }
-                });
-            }
-        }).start();
+        ExecutorService service = Executors.newFixedThreadPool(10);
+            service.execute(task);
 
         addExp();
         navigate();
@@ -89,9 +102,7 @@ public class ListActivity extends AppCompatActivity {
         });
     }
 
-    public ArrayList<Expense> EventChangeListener(){
-        ArrayList<Expense> expenseTemp = new ArrayList<>();
-
+    public void EventChangeListener(){
         db.collection("expenses").orderBy("dateCreated", Query.Direction.DESCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
@@ -108,22 +119,59 @@ public class ListActivity extends AppCompatActivity {
                             if (docCh.getType() == DocumentChange.Type.ADDED)
                             {
                                 DocumentSnapshot doc = docCh.getDocument();
+                                Log.i("EXPENSE USER ID", doc.getString("userID"));
+                                Log.i("CURRENT USER ID", mAuth.getCurrentUser().getUid());
+                                Boolean match = doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid());
+                                Log.i("MATCH", String.valueOf(match));
                                 if(doc.getString("userID").trim().equalsIgnoreCase(mAuth.getCurrentUser().getUid())){
-                                    expenseTemp.add(docCh.getDocument().toObject(Expense.class));
+                                    Timestamp expiresAt = doc.getTimestamp("expiresAt");
+                                    Timestamp currDate = Timestamp.now();
+                                    if(currDate.compareTo(expiresAt) == 0 || currDate.compareTo(expiresAt) > 0)
+                                    {
+                                        String expIDtoDelete = doc.getString("expenseID");
+                                        db.collection("expenses").document(expIDtoDelete).delete();
+                                    }
+                                    else{
+                                        expenses.add(docCh.getDocument().toObject(Expense.class));
+                                    }
+
                                 }
 
                             }
                         }
+
+                        expenseAdapter.notifyDataSetChanged();
                     }
                 });
-
-        return expenseTemp;
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         navigate();
+
+        Intent intent = getIntent();
+
+        check = intent.getBooleanExtra("check" , false);
+
+        if(check == true) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            expenseAdapter.setData(filterPopup.expenses);
+                            expenseAdapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+            }).start();
+
+            check = false;
+        }
+
     }
 
     @Override
@@ -131,6 +179,13 @@ public class ListActivity extends AppCompatActivity {
         super.onResume();
         navigate();
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        navigate();
+    }
+
 
     private void navigate() {
         binding.bottomNav.setSelectedItemId(R.id.nav_home);
