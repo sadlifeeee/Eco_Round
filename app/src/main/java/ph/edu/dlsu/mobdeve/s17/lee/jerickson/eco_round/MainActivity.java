@@ -310,7 +310,7 @@ public class MainActivity extends AppCompatActivity {
                         FirebaseUser currentUser = mAuth.getCurrentUser();
                         User user = new User(currentUser.getEmail());
 
-                        db.collection("users").add(user).addOnCompleteListener(task1 -> {
+                        db.collection("users").document(mAuth.getCurrentUser().getUid()).set(user).addOnCompleteListener(task1 -> {
                             if (task1.isSuccessful()) {
                                 Toast.makeText(getApplicationContext(), "Login Successful!", Toast.LENGTH_SHORT).show();
                                 Intent goToSecond = new Intent(MainActivity.this, ListActivity.class);
